@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-39:/values-sw600dp-v13/values-sw600dp-v13.xml",
+            "outputFile": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-73:/values-sw600dp-v13/values-sw600dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\arsenic\\.gradle\\caches\\8.13\\transforms\\76fc0e9626acb5333fc0ddf11d342524\\transformed\\appcompat-1.7.1\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
+                    "source": "C:\\Users\\arsenic\\.gradle\\caches\\8.13\\transforms\\1a80ebfede153de1b2858b4dd9b3d07a\\transformed\\appcompat-1.7.1\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\arsenic\\.gradle\\caches\\8.13\\transforms\\d89528c14a8be2fdb20137bc984ab7c2\\transformed\\material-1.12.0\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
+                    "source": "C:\\Users\\arsenic\\.gradle\\caches\\8.13\\transforms\\c37d4821a5ea9d8b2707f451d1fad90e\\transformed\\material-1.12.0\\res\\values-sw600dp-v13\\values-sw600dp-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,10,11,12,13,14",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",

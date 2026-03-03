@@ -8,20 +8,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.m3.rajat.piyush.studymatealpha.R
-import com.m3.rajat.piyush.studymatealpha.database.AdminModel
+import com.m3.rajat.piyush.studymatealpha.database.FacultyEntity
 
 class FacultyAdapter : RecyclerView.Adapter<FacultyAdapter.FacultyViewHolder>() {
 
-    private var admList : ArrayList<AdminModel> = ArrayList()
-    private var onClickItem : ((AdminModel) -> Unit) ?= null
+    private var facList : ArrayList<FacultyEntity> = ArrayList()
+    private var onClickItem : ((FacultyEntity) -> Unit) ?= null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItems(items: ArrayList<AdminModel>){
-        this.admList = items
+    fun addItems(items: List<FacultyEntity>){
+        this.facList = ArrayList(items)
         notifyDataSetChanged()
     }
 
-    fun setOnClickItem(callback: ((AdminModel) -> Unit) ?= null){
+    fun setOnClickItem(callback: ((FacultyEntity) -> Unit) ?= null){
         this.onClickItem = callback
     }
 
@@ -29,37 +29,26 @@ class FacultyAdapter : RecyclerView.Adapter<FacultyAdapter.FacultyViewHolder>() 
         LayoutInflater.from(parent.context).inflate(R.layout.card_faculty_data,parent,false)
     )
 
-    override fun getItemCount(): Int {
-        return admList.size
-    }
+    override fun getItemCount(): Int = facList.size
 
     override fun onBindViewHolder(holder: FacultyViewHolder, position: Int) {
-        val adm = admList[position]
-        holder.bindView(adm)
-        holder.itemView.setOnClickListener{
-            onClickItem?.invoke(adm)
-        }
+        val fac = facList[position]
+        holder.bindView(fac)
+        holder.itemView.setOnClickListener{ onClickItem?.invoke(fac) }
     }
 
     class FacultyViewHolder(var view: View): RecyclerView.ViewHolder(view) {
+        private var image = view.findViewById<ImageView>(R.id.UserAccountProfile)
         private var name = view.findViewById<TextView>(R.id.FacultyName)
         private var email = view.findViewById<TextView>(R.id.FacultyEmail)
-        private var subClass = view.findViewById<TextView>(R.id.FacultySub)
-        private var image = view .findViewById<ImageView>(R.id.UserAccountProfile)
+        private var subject = view.findViewById<TextView>(R.id.FacultySub)
 
-        fun bindView(adm : AdminModel){
-            subClass.text = adm.faculty_sub
-            name.text = adm.faculty_name
-            email.text = adm.faculty_email
-            if(adm.faculty_image!=null) {
-                image.setImageBitmap(
-                    BitmapFactory.decodeByteArray(
-                        adm.faculty_image,
-                        0,
-                        adm.faculty_image!!.size
-                    )
-                )
-            }
+        fun bindView(fac : FacultyEntity){
+            val bitmap = fac.facultyImage?.let { BitmapFactory.decodeByteArray(it,0, it.size) }
+            image.setImageBitmap(bitmap)
+            name.text = fac.facultyName
+            email.text = fac.facultyEmail
+            subject.text = fac.facultySub
         }
     }
 }

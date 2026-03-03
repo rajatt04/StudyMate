@@ -4,87 +4,76 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.m3.rajat.piyush.studymatealpha.faculty.Faculty
 import com.m3.rajat.piyush.studymatealpha.R
-import com.m3.rajat.piyush.studymatealpha.database.SQLiteHelper
+import com.m3.rajat.piyush.studymatealpha.database.StudentViewModel
 import com.m3.rajat.piyush.studymatealpha.databinding.ActivityStudentPanelBinding
 
 @Suppress("DEPRECATION")
 class Student_panel : AppCompatActivity() {
     private lateinit var binding: ActivityStudentPanelBinding
-    private lateinit var sqLiteHelper: SQLiteHelper
+    private lateinit var viewModel: StudentViewModel
     private lateinit var studentSession: StudentSession
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentPanelBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sqLiteHelper = SQLiteHelper(this)
+        viewModel = ViewModelProvider(this)[StudentViewModel::class.java]
         studentSession = StudentSession(this)
 
         val studentId = studentSession.sharedPreferences.getInt("id", 0)
         Log.d("sid",studentId.toString())
 
-        val student = sqLiteHelper.getStudent(studentId)
-        if (student.isNotEmpty()) {
-            binding.studentId.setText(student[0].student_id.toString())
-            binding.studentName.setText(student[0].student_name)
-            binding.studentEmail.setText(student[0].student_email)
-            binding.studentClass.setText(student[0].student_class)
-            if (student[0].student_image != null) {
-                binding.studentImage.setImageBitmap(
-                    BitmapFactory.decodeByteArray(
-                        student[0].student_image,
-                        0,
-                        student[0].student_image!!.size
-                    )
-                )
-            } else {
-                binding.studentImage.setImageDrawable(resources.getDrawable(R.drawable.add_img))
+        viewModel.getById(studentId) { student ->
+            runOnUiThread {
+                if (student != null) {
+                    binding.studentId.setText(student.studentId.toString())
+                    binding.studentName.setText(student.studentName)
+                    binding.studentEmail.setText(student.studentEmail)
+                    binding.studentClass.setText(student.studentClass)
+                    if (student.studentImage != null) {
+                        binding.studentImage.setImageBitmap(
+                            BitmapFactory.decodeByteArray(student.studentImage, 0, student.studentImage.size)
+                        )
+                    } else {
+                        binding.studentImage.setImageDrawable(resources.getDrawable(R.drawable.add_img))
+                    }
+                }
             }
         }
 
         binding.btnLogout.setOnClickListener {
-            val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
+            MaterialAlertDialogBuilder(this)
                 .setMessage("Are you sure want to logout ?")
                 .setTitle("Information")
                 .setCancelable(true)
-                .setPositiveButton("Yes"){
-                        dialog, _ ->
+                .setPositiveButton("Yes"){ dialog, _ ->
                     studentSession.studentLogout()
                     startActivity(Intent(applicationContext, Faculty::class.java))
                     finish()
                     dialog.dismiss()
                 }
-                .setNegativeButton("No"){
-                        dialog, _ ->
-                    dialog.dismiss()
-                }
-            materialAlertDialogBuilder.create().show()
+                .setNegativeButton("No"){ dialog, _ -> dialog.dismiss() }
+                .create().show()
         }
 
         binding.topAppBar.setNavigationOnClickListener {
-            val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
+            MaterialAlertDialogBuilder(this)
                 .setMessage("Are you sure want to logout ?")
                 .setTitle("Information")
                 .setCancelable(true)
-                .setPositiveButton("Yes"){
-                        dialog, _ ->
+                .setPositiveButton("Yes"){ dialog, _ ->
                     studentSession.studentLogout()
                     startActivity(Intent(applicationContext, Faculty::class.java))
                     finish()
                     dialog.dismiss()
                 }
-                .setNegativeButton("No"){
-                        dialog, _ ->
-                    dialog.dismiss()
-                }
-            materialAlertDialogBuilder.create().show()
+                .setNegativeButton("No"){ dialog, _ -> dialog.dismiss() }
+                .create().show()
         }
-
-        onBackPressedDispatcher.addCallback { }
     }
 }

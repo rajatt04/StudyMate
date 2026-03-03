@@ -5,16 +5,17 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.m3.rajat.piyush.studymatealpha.MainActivity
-import com.m3.rajat.piyush.studymatealpha.database.SQLiteHelper
+import com.m3.rajat.piyush.studymatealpha.database.AdminViewModel
+import com.m3.rajat.piyush.studymatealpha.database.PasswordUtils
 import com.m3.rajat.piyush.studymatealpha.databinding.ActivityAdminBinding
 
 class Admin : AppCompatActivity() {
     private lateinit var binding : ActivityAdminBinding
     private lateinit var adminSession: AdminSession
-    private lateinit var sqLiteHelper: SQLiteHelper
+    private lateinit var viewModel: AdminViewModel
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,15 +23,28 @@ class Admin : AppCompatActivity() {
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sqLiteHelper = SQLiteHelper(this)
+        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
         adminSession = AdminSession(this)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-    }
+        viewModel.loginResult.observe(this) { admin ->
+            if (admin != null) {
+                val pass = binding.EdtAdminPasswd.text.toString()
+                if (PasswordUtils.verifyPassword(pass, admin.adminPassword)) {
+                    Toast.makeText(applicationContext, "SignIn Successfully", Toast.LENGTH_SHORT).show()
+                    adminSession.adminLogin(admin.adminEmail, admin.adminName, admin.adminId!!)
+                    startActivity(Intent(this, Admin_panel::class.java))
+                } else {
+                    Toast.makeText(applicationContext, "Wrong Password", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(applicationContext, "Invalid Credentials", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Please Try To Create A Admin First !!", Toast.LENGTH_LONG).show()
+                clearAdmin()
+            }
+        }
 
-    override fun onStart() {
-        super.onStart()
         binding.btnLogin.setOnClickListener {
             validateUser()
         }
@@ -46,8 +60,6 @@ class Admin : AppCompatActivity() {
             startActivity(Intent(applicationContext, MainActivity::class.java))
             finish()
         }
-
-        onBackPressedDispatcher.addCallback {}
     }
 
     private fun validateUser(): Boolean {
@@ -62,29 +74,10 @@ class Admin : AppCompatActivity() {
             return false
         } else {
             val email = binding.EdtAdminEmail.text.toString()
-            val pass = binding.EdtAdminPasswd.text.toString()
-
-            val admin = sqLiteHelper.checkAdmin(email)
-
-            if (admin.isNotEmpty()) {
-                if (email == admin[0].admin_email && pass == admin[0].admin_password) {
-                    Toast.makeText(applicationContext, "SignIn Successfully", Toast.LENGTH_SHORT).show()
-                    adminSession.adminLogin(email, admin[0].admin_name, admin[0].admin_id!!)
-                    startActivity(Intent(this, Admin_panel::class.java))
-                    return true
-                } else {
-                    Toast.makeText(applicationContext, "Wrong Password", Toast.LENGTH_SHORT).show()
-                    return false
-                }
-            } else {
-                Toast.makeText(applicationContext, "Invalid Credentials", Toast.LENGTH_SHORT).show()
-                Toast.makeText(applicationContext, "Please Try To Create A Admin First !!", Toast.LENGTH_LONG).show()
-                clearAdmin()
-                return false
-            }
+            viewModel.checkAdmin(email)
+            return true
         }
     }
-
 
     private fun clearAdmin() {
         binding.EdtAdminEmail.setText("")

@@ -23,14 +23,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.m3.rajat.piyush.studymatealpha.R
 import com.m3.rajat.piyush.studymatealpha.assignment.assignment_add
 import com.m3.rajat.piyush.studymatealpha.assignment.assignment_view
-import com.m3.rajat.piyush.studymatealpha.database.AdminModel
-import com.m3.rajat.piyush.studymatealpha.database.SQLiteHelper
+import com.m3.rajat.piyush.studymatealpha.database.AdminViewModel
 import com.m3.rajat.piyush.studymatealpha.databinding.ActivityAdminPanelBinding
 import com.m3.rajat.piyush.studymatealpha.faculty.faculty_add
 import com.m3.rajat.piyush.studymatealpha.faculty.faculty_view
@@ -50,7 +50,7 @@ class Admin_panel : AppCompatActivity() {
     private lateinit var add_assignment : MaterialCardView
     private lateinit var byteArray: ByteArray
     private lateinit var adminSession: AdminSession
-    private lateinit var  sqLiteHelper: SQLiteHelper
+    private lateinit var viewModel: AdminViewModel
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding : ActivityAdminPanelBinding
 
@@ -60,7 +60,7 @@ class Admin_panel : AppCompatActivity() {
         binding = ActivityAdminPanelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sqLiteHelper = SQLiteHelper(this)
+        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
         adminSession= AdminSession(this)
 
         binding.fab.setOnClickListener {
@@ -105,20 +105,23 @@ class Admin_panel : AppCompatActivity() {
 
         val adminId = adminSession.sharedPreferences.getInt("id",0)
 
-        val admin = sqLiteHelper.getAdmin(adminId)
-        if(admin.isNotEmpty()){
-            name.text = admin[0].admin_name
-            email.text = admin[0].admin_email
-            if(admin[0].admin_image!=null) {
-                image.setImageBitmap(
-                    BitmapFactory.decodeByteArray(
-                        admin[0].admin_image,
-                        0,
-                        admin[0].admin_image!!.size
-                    )
-                )
-            }else{
-                image.setImageDrawable(resources.getDrawable(R.drawable.add_img))
+        viewModel.getAdminById(adminId) { admin ->
+            runOnUiThread {
+                if (admin != null) {
+                    name.text = admin.adminName
+                    email.text = admin.adminEmail
+                    if (admin.adminImage != null) {
+                        image.setImageBitmap(
+                            BitmapFactory.decodeByteArray(
+                                admin.adminImage,
+                                0,
+                                admin.adminImage.size
+                            )
+                        )
+                    } else {
+                        image.setImageDrawable(resources.getDrawable(R.drawable.add_img))
+                    }
+                }
             }
         }
 
@@ -230,54 +233,31 @@ class Admin_panel : AppCompatActivity() {
             val image : ImageView = view.findViewById(R.id.admin_photo)
             try {
                 val inputStream = contentResolver.openInputStream(uri!!)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG,50,stream)
-                byteArray = stream.toByteArray()
-                //size validation
-                if (byteArray.size / 1024 < 1024){
-                    image.setImageBitmap(bitmap)
-                    inputStream!!.close()
+                try {
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG,50,stream)
+                    byteArray = stream.toByteArray()
+                    //size validation
+                    if (byteArray.size / 1024 < 500){
+                        image.setImageBitmap(bitmap)
 
-                    val email : String  =  adminSession.sharedPreferences.getString("email","").toString()
-                    Log.d("rc-mail",email)
-                    val images =  byteArray
+                        val adminEmail : String  =  adminSession.sharedPreferences.getString("email","").toString()
+                        Log.d("rc-mail",adminEmail)
 
-                    val adminModel = AdminModel(admin_email = email , admin_image = images)
-                    Log.d("rc-model",adminModel.toString())
-                    val ic = sqLiteHelper.updateImage(adminModel)
-                    Log.d("rc-query",ic.toString())
-
-                    if(ic  > -1){
+                        viewModel.updateImage(adminEmail, byteArray)
                         Toast.makeText(applicationContext,"Profile picture update",Toast.LENGTH_SHORT).show()
                     }else{
-                        Toast.makeText(applicationContext,"Not Update",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Please choose image below 500K",Toast.LENGTH_SHORT).show()
                     }
-
-                }else{
-                    Toast.makeText(this,"Please choose image below 500K",Toast.LENGTH_SHORT).show()
+                } finally {
+                    inputStream?.close()
                 }
             }catch (e : Exception){
                 Toast.makeText(applicationContext,e.message,Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-//    @RequiresApi(Build.VERSION_CODES.TIRAMISU) :: ALSO ADD IN MANIFEST READ_IMAGE PERMISSION FOR API 33 =>
-//    private fun reqPermission(){
-//        isPermissionGrantedForReadImageAPI33 = ContextCompat.checkSelfPermission(
-//            this,android.Manifest.permission.READ_MEDIA_IMAGES)==PackageManager.PERMISSION_GRANTED
-//
-//        val permissionRequest : MutableList<String> = ArrayList()
-//
-//        if (!isPermissionGrantedForReadImageAPI33){
-//            permissionRequest.add(android.Manifest.permission.READ_MEDIA_IMAGES)
-//        }
-//
-//        if (permissionRequest.isNotEmpty()){
-//            permissionLauncher.launch(permissionRequest.toTypedArray())
-//        }
-//    }
 
     //Navigation Drawer OnSelect Event
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.m3.rajat.piyush.studymatealpha.R
-import com.m3.rajat.piyush.studymatealpha.database.SQLiteHelper
+import com.m3.rajat.piyush.studymatealpha.database.FacultyViewModel
+import com.m3.rajat.piyush.studymatealpha.database.PasswordUtils
+import com.m3.rajat.piyush.studymatealpha.database.StudentViewModel
 import com.m3.rajat.piyush.studymatealpha.faculty.Faculty
 import com.m3.rajat.piyush.studymatealpha.faculty.FacultySession
 import com.m3.rajat.piyush.studymatealpha.faculty.Faculty_panel
@@ -19,7 +21,8 @@ class Student : AppCompatActivity() {
     private lateinit var userPasswd : EditText
     private lateinit var userLogin : Button
     private lateinit var userBack : Button
-    private lateinit var  sqLiteHelper: SQLiteHelper
+    private lateinit var facultyViewModel: FacultyViewModel
+    private lateinit var studentViewModel: StudentViewModel
     private lateinit var facultySession: FacultySession
     private lateinit var studentSession: StudentSession
 
@@ -32,7 +35,8 @@ class Student : AppCompatActivity() {
         userLogin = findViewById(R.id.userLogin)
         userBack = findViewById(R.id.userBack)
 
-        sqLiteHelper = SQLiteHelper(this)
+        facultyViewModel = ViewModelProvider(this)[FacultyViewModel::class.java]
+        studentViewModel = ViewModelProvider(this)[StudentViewModel::class.java]
         facultySession = FacultySession(this)
         studentSession = StudentSession(this)
 
@@ -40,41 +44,60 @@ class Student : AppCompatActivity() {
         val faculty = intent.getStringExtra("faculty_email")
 
         if (student != null) {
-            val yesIsStudent = sqLiteHelper.isStudent(student)
-            userId.setText(yesIsStudent[0].student_id.toString())
+            studentViewModel.getById(0) {} // placeholder
+            // Use the lookup to populate ID
+            studentViewModel.isStudent(student)
+            studentViewModel.lookupResult.observe(this) { list ->
+                if (list.isNotEmpty()) {
+                    userId.setText(list[0].studentId.toString())
+                }
+            }
         }
 
         if (faculty != null) {
-            val yesIsFaculty = sqLiteHelper.isFaculty(faculty)
-            userId.setText(yesIsFaculty[0].faculty_id.toString())
+            facultyViewModel.isFaculty(faculty)
+            facultyViewModel.lookupResult.observe(this) { list ->
+                if (list.isNotEmpty()) {
+                    userId.setText(list[0].facultyId.toString())
+                }
+            }
         }
 
-        val id = userId.text.toString()
-
         userLogin.setOnClickListener {
-            if (validation_student()) {
-                val valFac = sqLiteHelper.chkPasswdFaculty(id.toInt())
-                if (valFac.isNotEmpty()) {
-                    if (userPasswd.text.toString() == valFac[0].faculty_password) {
-                        facultySession.facultyLogin(userId.text.toString().toInt())
-                        showToast("Login Successfully !")
-                        startActivity(Intent(applicationContext, Faculty_panel::class.java)
-                            .putExtra("id",userId.text))
-                        userId.text.clear()
-                        userPasswd.text.clear()
-                    } else {
-                        showToast("Incorrect Password !")
-                    }
-                }else if (sqLiteHelper.chkPasswdStudent(id.toInt()).isNotEmpty()) {
-                    if (userPasswd.text.toString() == sqLiteHelper.chkPasswdStudent(id.toInt())[0].student_password) {
-                        studentSession.studentLogin(userId.text.toString().toInt())
-                        showToast("Login Successfully !")
-                        startActivity(Intent(applicationContext, Student_panel::class.java)
-                            .putExtra("id",userId.text))
-                        userId.text.clear()
-                        userPasswd.text.clear()
-                    } else {
-                        showToast("Incorrect Password !")
+            val id = userId.text.toString()
+            if (validation_student() && id.isNotEmpty()) {
+                val idInt = id.toInt()
+                facultyViewModel.getById(idInt) { fac ->
+                    runOnUiThread {
+                        if (fac != null) {
+                            if (PasswordUtils.verifyPassword(userPasswd.text.toString(), fac.facultyPassword)) {
+                                facultySession.facultyLogin(idInt)
+                                showToast("Login Successfully !")
+                                startActivity(Intent(applicationContext, Faculty_panel::class.java))
+                                userId.text.clear()
+                                userPasswd.text.clear()
+                            } else {
+                                showToast("Incorrect Password !")
+                            }
+                        } else {
+                            studentViewModel.getById(idInt) { std ->
+                                runOnUiThread {
+                                    if (std != null) {
+                                        if (PasswordUtils.verifyPassword(userPasswd.text.toString(), std.studentPassword)) {
+                                            studentSession.studentLogin(idInt)
+                                            showToast("Login Successfully !")
+                                            startActivity(Intent(applicationContext, Student_panel::class.java))
+                                            userId.text.clear()
+                                            userPasswd.text.clear()
+                                        } else {
+                                            showToast("Incorrect Password !")
+                                        }
+                                    } else {
+                                        showToast("User not found !")
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -83,8 +106,6 @@ class Student : AppCompatActivity() {
         userBack.setOnClickListener {
             startActivity(Intent(applicationContext, Faculty::class.java))
         }
-
-        onBackPressedDispatcher.addCallback {}
     }
 
     private fun validation_student(): Boolean {

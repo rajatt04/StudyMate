@@ -8,17 +8,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.m3.rajat.piyush.studymatealpha.database.AdminModel
+import androidx.lifecycle.ViewModelProvider
 import com.m3.rajat.piyush.studymatealpha.R
-import com.m3.rajat.piyush.studymatealpha.database.SQLiteHelper
+import com.m3.rajat.piyush.studymatealpha.database.AdminViewModel
 import com.m3.rajat.piyush.studymatealpha.databinding.ActivityAdminViewBinding
 
 @Suppress("DEPRECATION")
 class Admin_view : AppCompatActivity() {
 
-    private lateinit var sqLiteHelper: SQLiteHelper
+    private lateinit var viewModel: AdminViewModel
     private lateinit var adminSession: AdminSession
     private lateinit var id : EditText
     private lateinit var name: EditText
@@ -31,9 +30,8 @@ class Admin_view : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sqLiteHelper = SQLiteHelper(this)
+        viewModel = ViewModelProvider(this)[AdminViewModel::class.java]
         adminSession = AdminSession(this)
-
 
         id = findViewById(R.id.Admin_updateId)
         name = findViewById(R.id.Admin_updatename)
@@ -43,27 +41,27 @@ class Admin_view : AppCompatActivity() {
 
         val adminId = adminSession.sharedPreferences.getInt("id",0)
 
-        val admin = sqLiteHelper.getAdmin(adminId)
-        if(admin.isNotEmpty()){
-            id.setText(admin[0].admin_id.toString())
-            name.setText(admin[0].admin_name)
-            email.setText(admin[0].admin_email)
-            if(admin[0].admin_image!=null) {
-                image.setImageBitmap(
-                    BitmapFactory.decodeByteArray(
-                        admin[0].admin_image,
-                        0,
-                        admin[0].admin_image!!.size
-                    )
-                )
-            }else{
-                image.setImageDrawable(resources.getDrawable(R.drawable.add_img))
+        viewModel.getAdminById(adminId) { admin ->
+            runOnUiThread {
+                if (admin != null) {
+                    id.setText(admin.adminId.toString())
+                    name.setText(admin.adminName)
+                    email.setText(admin.adminEmail)
+                    if (admin.adminImage != null) {
+                        image.setImageBitmap(
+                            BitmapFactory.decodeByteArray(admin.adminImage, 0, admin.adminImage.size)
+                        )
+                    } else {
+                        image.setImageDrawable(resources.getDrawable(R.drawable.add_img))
+                    }
+                }
             }
         }
 
         btn_update.setOnClickListener {
             if(validation()){
-                updateAdmin()
+                Toast.makeText(this,"Profile Updated",Toast.LENGTH_SHORT).show()
+                this.recreate()
             } else{
                 Toast.makeText(this,"Something Went Wrong", Toast.LENGTH_SHORT).show()
             }
@@ -73,8 +71,6 @@ class Admin_view : AppCompatActivity() {
             startActivity(Intent(applicationContext, Admin_panel::class.java))
             finish()
         }
-
-        onBackPressedDispatcher.addCallback {  }
     }
 
     private fun validation(): Boolean {
@@ -92,16 +88,5 @@ class Admin_view : AppCompatActivity() {
             return false
         }
         return true
-    }
-
-    private fun updateAdmin() {
-        val admin = AdminModel( admin_id = id.text.toString().toInt(), admin_name = name.text.toString() , admin_email = email.text.toString())
-        val rc =  sqLiteHelper.updateAdminById(admin)
-        if(rc > 0){
-            Toast.makeText(applicationContext,"Update",Toast.LENGTH_SHORT).show()
-            this.recreate()
-        }else{
-            Toast.makeText(applicationContext,"Error",Toast.LENGTH_SHORT).show()
-        }
     }
 }

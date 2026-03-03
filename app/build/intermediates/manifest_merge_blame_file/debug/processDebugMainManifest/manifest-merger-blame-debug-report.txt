@@ -1,0 +1,319 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.m3.rajat.piyush.studymatealpha"
+4    android:versionCode="8"
+5    android:versionName="rajatt.7z" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission
+11-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:5:5-7:38
+12        android:name="android.permission.READ_EXTERNAL_STORAGE"
+12-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:6:9-64
+13        android:maxSdkVersion="32" />
+13-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:7:9-35
+14    <uses-permission
+14-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:8:5-10:38
+15        android:name="android.permission.READ_MEDIA_IMAGES"
+15-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:9:9-60
+16        android:minSdkVersion="21" />
+16-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:10:9-35
+17    <uses-permission android:name="android.permission.VIBRATE" />
+17-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:12:5-66
+17-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:12:22-63
+18
+19    <permission
+19-->[androidx.core:core:1.16.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\733d51c5feb924a8bb5e9796f0a7dab5\transformed\core-1.16.0\AndroidManifest.xml:22:5-24:47
+20        android:name="com.m3.rajat.piyush.studymatealpha.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+20-->[androidx.core:core:1.16.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\733d51c5feb924a8bb5e9796f0a7dab5\transformed\core-1.16.0\AndroidManifest.xml:23:9-81
+21        android:protectionLevel="signature" />
+21-->[androidx.core:core:1.16.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\733d51c5feb924a8bb5e9796f0a7dab5\transformed\core-1.16.0\AndroidManifest.xml:24:9-44
+22
+23    <uses-permission android:name="com.m3.rajat.piyush.studymatealpha.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+23-->[androidx.core:core:1.16.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\733d51c5feb924a8bb5e9796f0a7dab5\transformed\core-1.16.0\AndroidManifest.xml:26:5-97
+23-->[androidx.core:core:1.16.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\733d51c5feb924a8bb5e9796f0a7dab5\transformed\core-1.16.0\AndroidManifest.xml:26:22-94
+24
+25    <application
+25-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:14:5-115:19
+26        android:name="com.m3.rajat.piyush.studymatealpha.StudyMateAlpha"
+26-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:15:9-39
+27        android:allowBackup="true"
+27-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:16:9-35
+28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+28-->[androidx.core:core:1.16.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\733d51c5feb924a8bb5e9796f0a7dab5\transformed\core-1.16.0\AndroidManifest.xml:28:18-86
+29        android:dataExtractionRules="@xml/data_extraction_rules"
+29-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:17:9-65
+30        android:debuggable="true"
+31        android:extractNativeLibs="false"
+32        android:fullBackupContent="@xml/backup_rules"
+32-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:18:9-54
+33        android:icon="@mipmap/ic_launcher"
+33-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:19:9-43
+34        android:label="@string/app_name"
+34-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:20:9-41
+35        android:roundIcon="@mipmap/ic_launcher_round"
+35-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:21:9-54
+36        android:supportsRtl="true"
+36-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:22:9-35
+37        android:testOnly="true"
+38        android:theme="@style/Theme.StudyMateAlpha" >
+38-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:23:9-52
+39        <activity
+39-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:25:9-28:40
+40            android:name="com.m3.rajat.piyush.studymatealpha.admin.AdminCreate"
+40-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:26:13-46
+41            android:exported="false"
+41-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:28:13-37
+42            android:screenOrientation="portrait" />
+42-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:27:13-49
+43        <activity
+43-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:29:9-32:40
+44            android:name="com.m3.rajat.piyush.studymatealpha.admin.Admin_panel"
+44-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:30:13-46
+45            android:exported="false"
+45-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:32:13-37
+46            android:screenOrientation="portrait" />
+46-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:31:13-49
+47        <activity
+47-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:33:9-36:40
+48            android:name="com.m3.rajat.piyush.studymatealpha.admin.Admin_view"
+48-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:34:13-45
+49            android:exported="false"
+49-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:36:13-37
+50            android:screenOrientation="portrait" />
+50-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:35:13-49
+51        <activity
+51-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:37:9-40:40
+52            android:name="com.m3.rajat.piyush.studymatealpha.assignment.assignment_add"
+52-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:38:13-54
+53            android:exported="false"
+53-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:40:13-37
+54            android:screenOrientation="portrait" />
+54-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:39:13-49
+55        <activity
+55-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:41:9-44:40
+56            android:name="com.m3.rajat.piyush.studymatealpha.assignment.assignment_view"
+56-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:42:13-55
+57            android:exported="false"
+57-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:44:13-37
+58            android:screenOrientation="portrait" />
+58-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:43:13-49
+59        <activity
+59-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:45:9-48:40
+60            android:name="com.m3.rajat.piyush.studymatealpha.faculty.faculty_add"
+60-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:46:13-48
+61            android:exported="false"
+61-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:48:13-37
+62            android:screenOrientation="portrait" />
+62-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:47:13-49
+63        <activity
+63-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:49:9-52:40
+64            android:name="com.m3.rajat.piyush.studymatealpha.faculty.Faculty_panel"
+64-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:50:13-50
+65            android:exported="false"
+65-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:52:13-37
+66            android:screenOrientation="portrait" />
+66-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:51:13-49
+67        <activity
+67-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:53:9-56:40
+68            android:name="com.m3.rajat.piyush.studymatealpha.faculty.Faculty"
+68-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:54:13-44
+69            android:exported="false"
+69-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:56:13-37
+70            android:screenOrientation="portrait" />
+70-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:55:13-49
+71        <activity
+71-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:57:9-60:40
+72            android:name="com.m3.rajat.piyush.studymatealpha.faculty.faculty_update"
+72-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:58:13-51
+73            android:exported="false"
+73-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:60:13-37
+74            android:screenOrientation="portrait" />
+74-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:59:13-49
+75        <activity
+75-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:61:9-64:40
+76            android:name="com.m3.rajat.piyush.studymatealpha.faculty.faculty_view"
+76-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:62:13-49
+77            android:exported="false"
+77-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:64:13-37
+78            android:screenOrientation="portrait" />
+78-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:63:13-49
+79        <activity
+79-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:65:9-68:40
+80            android:name="com.m3.rajat.piyush.studymatealpha.notice.notice_add"
+80-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:66:13-46
+81            android:exported="false"
+81-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:68:13-37
+82            android:screenOrientation="portrait" />
+82-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:67:13-49
+83        <activity
+83-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:69:9-72:40
+84            android:name="com.m3.rajat.piyush.studymatealpha.notice.notice_view"
+84-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:70:13-47
+85            android:exported="false"
+85-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:72:13-37
+86            android:screenOrientation="portrait" />
+86-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:71:13-49
+87        <activity
+87-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:73:9-76:40
+88            android:name="com.m3.rajat.piyush.studymatealpha.student.student_add"
+88-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:74:13-48
+89            android:exported="false"
+89-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:76:13-37
+90            android:screenOrientation="portrait" />
+90-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:75:13-49
+91        <activity
+91-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:77:9-80:40
+92            android:name="com.m3.rajat.piyush.studymatealpha.student.student_update"
+92-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:78:13-51
+93            android:exported="false"
+93-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:80:13-37
+94            android:screenOrientation="portrait" />
+94-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:79:13-49
+95        <activity
+95-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:81:9-84:40
+96            android:name="com.m3.rajat.piyush.studymatealpha.student.student_view"
+96-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:82:13-49
+97            android:exported="false"
+97-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:84:13-37
+98            android:screenOrientation="portrait" />
+98-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:83:13-49
+99        <activity
+99-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:85:9-88:40
+100            android:name="com.m3.rajat.piyush.studymatealpha.student.Student_panel"
+100-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:86:13-50
+101            android:exported="false"
+101-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:88:13-37
+102            android:screenOrientation="portrait" />
+102-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:87:13-49
+103        <activity
+103-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:89:9-92:40
+104            android:name="com.m3.rajat.piyush.studymatealpha.student.Student"
+104-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:90:13-44
+105            android:exported="false"
+105-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:92:13-37
+106            android:screenOrientation="portrait" />
+106-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:91:13-49
+107        <activity
+107-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:93:9-96:40
+108            android:name="com.m3.rajat.piyush.studymatealpha.AboutUs"
+108-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:94:13-36
+109            android:exported="false"
+109-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:96:13-37
+110            android:screenOrientation="portrait" />
+110-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:95:13-49
+111        <activity
+111-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:97:9-100:40
+112            android:name="com.m3.rajat.piyush.studymatealpha.admin.Admin"
+112-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:98:13-40
+113            android:exported="false"
+113-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:100:13-37
+114            android:screenOrientation="portrait" />
+114-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:99:13-49
+115        <activity
+115-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:101:9-104:40
+116            android:name="com.m3.rajat.piyush.studymatealpha.ContactUs"
+116-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:102:13-38
+117            android:exported="false"
+117-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:104:13-37
+118            android:screenOrientation="portrait" />
+118-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:103:13-49
+119        <activity
+119-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:105:9-114:20
+120            android:name="com.m3.rajat.piyush.studymatealpha.MainActivity"
+120-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:106:13-41
+121            android:exported="true"
+121-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:108:13-36
+122            android:screenOrientation="portrait" >
+122-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:107:13-49
+123            <intent-filter>
+123-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:109:13-113:29
+124                <action android:name="android.intent.action.MAIN" />
+124-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:110:17-69
+124-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:110:25-66
+125
+126                <category android:name="android.intent.category.LAUNCHER" />
+126-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:112:17-77
+126-->D:\StudioProjects\StudyMateAlpha\app\src\main\AndroidManifest.xml:112:27-74
+127            </intent-filter>
+128        </activity>
+129
+130        <provider
+130-->[androidx.emoji2:emoji2:1.3.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\a2d4f157325de0cb7395fff2abb25883\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+131            android:name="androidx.startup.InitializationProvider"
+131-->[androidx.emoji2:emoji2:1.3.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\a2d4f157325de0cb7395fff2abb25883\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+132            android:authorities="com.m3.rajat.piyush.studymatealpha.androidx-startup"
+132-->[androidx.emoji2:emoji2:1.3.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\a2d4f157325de0cb7395fff2abb25883\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+133            android:exported="false" >
+133-->[androidx.emoji2:emoji2:1.3.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\a2d4f157325de0cb7395fff2abb25883\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+134            <meta-data
+134-->[androidx.emoji2:emoji2:1.3.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\a2d4f157325de0cb7395fff2abb25883\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+135                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+135-->[androidx.emoji2:emoji2:1.3.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\a2d4f157325de0cb7395fff2abb25883\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+136                android:value="androidx.startup" />
+136-->[androidx.emoji2:emoji2:1.3.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\a2d4f157325de0cb7395fff2abb25883\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+137            <meta-data
+137-->[androidx.lifecycle:lifecycle-process:2.9.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\4a29c82344e9dfa18d1aeb669ff0975a\transformed\lifecycle-process-2.9.0\AndroidManifest.xml:29:13-31:52
+138                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+138-->[androidx.lifecycle:lifecycle-process:2.9.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\4a29c82344e9dfa18d1aeb669ff0975a\transformed\lifecycle-process-2.9.0\AndroidManifest.xml:30:17-78
+139                android:value="androidx.startup" />
+139-->[androidx.lifecycle:lifecycle-process:2.9.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\4a29c82344e9dfa18d1aeb669ff0975a\transformed\lifecycle-process-2.9.0\AndroidManifest.xml:31:17-49
+140            <meta-data
+140-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+141                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+141-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+142                android:value="androidx.startup" />
+142-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+143        </provider>
+144
+145        <service
+145-->[androidx.room:room-runtime-android:2.7.1] C:\Users\arsenic\.gradle\caches\8.13\transforms\b710ae7246de8acd8133561b66c0c1ff\transformed\room-runtime-release\AndroidManifest.xml:24:9-28:63
+146            android:name="androidx.room.MultiInstanceInvalidationService"
+146-->[androidx.room:room-runtime-android:2.7.1] C:\Users\arsenic\.gradle\caches\8.13\transforms\b710ae7246de8acd8133561b66c0c1ff\transformed\room-runtime-release\AndroidManifest.xml:25:13-74
+147            android:directBootAware="true"
+147-->[androidx.room:room-runtime-android:2.7.1] C:\Users\arsenic\.gradle\caches\8.13\transforms\b710ae7246de8acd8133561b66c0c1ff\transformed\room-runtime-release\AndroidManifest.xml:26:13-43
+148            android:exported="false" />
+148-->[androidx.room:room-runtime-android:2.7.1] C:\Users\arsenic\.gradle\caches\8.13\transforms\b710ae7246de8acd8133561b66c0c1ff\transformed\room-runtime-release\AndroidManifest.xml:27:13-37
+149
+150        <receiver
+150-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+151            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+151-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+152            android:directBootAware="false"
+152-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+153            android:enabled="true"
+153-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+154            android:exported="true"
+154-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+155            android:permission="android.permission.DUMP" >
+155-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+156            <intent-filter>
+156-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+157                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+157-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+157-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+158            </intent-filter>
+159            <intent-filter>
+159-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+160                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+160-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+160-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+161            </intent-filter>
+162            <intent-filter>
+162-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+163                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+163-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+163-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+164            </intent-filter>
+165            <intent-filter>
+165-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+166                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+166-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+166-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\arsenic\.gradle\caches\8.13\transforms\9cc367ecbed83fb1061f7e8aa0597068\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+167            </intent-filter>
+168        </receiver>
+169    </application>
+170
+171</manifest>

@@ -8,20 +8,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.m3.rajat.piyush.studymatealpha.R
-import com.m3.rajat.piyush.studymatealpha.database.AdminModel
+import com.m3.rajat.piyush.studymatealpha.database.StudentEntity
 
 class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
 
-    private var admList : ArrayList<AdminModel> = ArrayList()
-    private var onClickItem : ((AdminModel) -> Unit) ?= null
+    private var stdList : ArrayList<StudentEntity> = ArrayList()
+    private var onClickItem : ((StudentEntity) -> Unit) ?= null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItems(items: ArrayList<AdminModel>){
-        this.admList = items
+    fun addItems(items: List<StudentEntity>){
+        this.stdList = ArrayList(items)
         notifyDataSetChanged()
     }
 
-    fun setOnClickItem(callback: ((AdminModel) -> Unit) ?= null){
+    fun setOnClickItem(callback: ((StudentEntity) -> Unit) ?= null){
         this.onClickItem = callback
     }
 
@@ -29,31 +29,26 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() 
         LayoutInflater.from(parent.context).inflate(R.layout.card_student_data,parent,false)
     )
 
-    override fun getItemCount(): Int {
-        return admList.size
-    }
+    override fun getItemCount(): Int = stdList.size
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
-        val adm = admList[position]
-        holder.bindView(adm)
-        holder.itemView.setOnClickListener{
-            onClickItem?.invoke(adm)
-        }
+        val std = stdList[position]
+        holder.bindView(std)
+        holder.itemView.setOnClickListener{ onClickItem?.invoke(std) }
     }
 
     class StudentViewHolder(var view: View): RecyclerView.ViewHolder(view) {
         private var name = view.findViewById<TextView>(R.id.StudentName)
         private var email = view.findViewById<TextView>(R.id.StudentEmailId)
+        private var sclass = view.findViewById<TextView>(R.id.StudentClass)
         private var image = view.findViewById<ImageView>(R.id.UserAccountProfile)
-        private var sub = view.findViewById<TextView>(R.id.StudentClass)
 
-        fun bindView(adm : AdminModel){
-            name.text = adm.student_name
-            email.text = adm.student_email
-            sub.text = adm.student_class
-            if (adm.student_image!=null){
-                image.setImageBitmap(BitmapFactory.decodeByteArray(adm.student_image,0,adm.student_image!!.size))
-            }
+        fun bindView(std : StudentEntity){
+            val bitmap = std.studentImage?.let { BitmapFactory.decodeByteArray(it,0, it.size) }
+            image.setImageBitmap(bitmap)
+            name.text = std.studentName
+            email.text = std.studentEmail
+            sclass.text = std.studentClass
         }
     }
 }

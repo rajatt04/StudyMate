@@ -7,12 +7,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.m3.rajat.piyush.studymatealpha.R
-import com.m3.rajat.piyush.studymatealpha.database.AdminModel
-import com.m3.rajat.piyush.studymatealpha.database.SQLiteHelper
+import com.m3.rajat.piyush.studymatealpha.database.FacultyEntity
+import com.m3.rajat.piyush.studymatealpha.database.FacultyViewModel
 import com.m3.rajat.piyush.studymatealpha.databinding.ActivityFacultyUpdateBinding
 
 class faculty_update : AppCompatActivity() {
@@ -25,20 +25,16 @@ class faculty_update : AppCompatActivity() {
     private lateinit var upd_id : EditText
     private lateinit var btn_upd : Button
     private lateinit var btn_delete : Button
-
     private lateinit var binding : ActivityFacultyUpdateBinding
+    private lateinit var viewModel: FacultyViewModel
 
-    private lateinit var sqLiteHelper: SQLiteHelper
-    private var adapter : FacultyAdapter?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFacultyUpdateBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initView()
-        sqLiteHelper = SQLiteHelper(this)
+        viewModel = ViewModelProvider(this)[FacultyViewModel::class.java]
 
-        //Getting Data From View For Update
         upd_name.setText(intent.getStringExtra("faculty_name"))
         upd_email.setText(intent.getStringExtra("faculty_email"))
         upd_password.setText(intent.getStringExtra("faculty_pass"))
@@ -48,80 +44,61 @@ class faculty_update : AppCompatActivity() {
             upd_image.setImageBitmap(BitmapFactory.decodeByteArray(intent.getByteArrayExtra("faculty_image"),0,intent.getByteArrayExtra("faculty_image")!!.size))
         }
 
+        viewModel.operationResult.observe(this) { success ->
+            if (success) {
+                Toast.makeText(applicationContext,"Update",Toast.LENGTH_SHORT).show()
+                startActivity(Intent(applicationContext, faculty_view::class.java))
+            } else {
+                Toast.makeText(applicationContext,"Error",Toast.LENGTH_SHORT).show()
+            }
+        }
 
         btn_upd.setOnClickListener {
-            if(validation()){
-                updateFaculty()
-            } else{
-                Toast.makeText(this,"Something Went Wrong",Toast.LENGTH_SHORT).show()
-            }
+            if(validation()) updateFaculty()
+            else Toast.makeText(this,"Something Went Wrong",Toast.LENGTH_SHORT).show()
         }
 
         btn_delete.setOnClickListener {
             val email = intent.getStringExtra("faculty_email")
-            if(email!=null) {
-                deleteFaculty(email)
-            }
+            if(email!=null) deleteFaculty(email)
         }
 
         binding.topAppBar.setNavigationOnClickListener {
             startActivity(Intent(applicationContext, faculty_view::class.java))
             finish()
         }
-
-        onBackPressedDispatcher.addCallback {  }
     }
 
     private fun validation(): Boolean {
-        if(upd_name.length() == 0){
-            upd_name.error = "Name Required"
-            return false
-        } else if(upd_password.length()==0){
-            upd_password.error = "Password Not Be Null"
-            return false
-        } else if(upd_sub.length()==0){
-            upd_sub.error = "Subject Can't Be Empty"
-            return false
-        }
+        if(upd_name.length() == 0){ upd_name.error = "Name Required"; return false }
+        else if(upd_password.length()==0){ upd_password.error = "Password Not Be Null"; return false }
+        else if(upd_sub.length()==0){ upd_sub.error = "Subject Can't Be Empty"; return false }
         return true
     }
 
     private fun updateFaculty() {
-        val faculty = AdminModel( faculty_id = upd_id.text.toString().toInt(),faculty_name = upd_name.text.toString() , faculty_email = upd_email.text.toString(), faculty_sub = upd_sub.text.toString(), faculty_password = upd_password.text.toString())
-        Log.d("apd",faculty.faculty_email)
-        val rc =  sqLiteHelper.updateFacultyById(faculty)
-        Log.d("apd",rc.toString())
-        if(rc > 0){
-            getFaculty()
-            Toast.makeText(applicationContext,"Update",Toast.LENGTH_SHORT).show()
-            startActivity(Intent(applicationContext, faculty_view::class.java))
-        }else{
-            Toast.makeText(applicationContext,"Error",Toast.LENGTH_SHORT).show()
-        }
+        val faculty = FacultyEntity(
+            facultyId = upd_id.text.toString().toInt(),
+            facultyName = upd_name.text.toString(),
+            facultyEmail = upd_email.text.toString(),
+            facultySub = upd_sub.text.toString(),
+            facultyPassword = upd_password.text.toString()
+        )
+        viewModel.updateFaculty(faculty)
     }
 
-    private fun getFaculty() {
-        val admList = sqLiteHelper.getAllFaculty()
-        adapter?.addItems(admList)
-    }
-
-    private fun deleteFaculty(email: String)
-    {
-        val builder = MaterialAlertDialogBuilder(this)
-        builder.setTitle("Faculty")
-        builder.setMessage("Do You Want To Delete This Faculty ?")
-        builder.setCancelable(true)
-        builder.setPositiveButton("Yes") { dialog,_->
-            sqLiteHelper.DeleteFaculty(email)
-            getFaculty()
-            dialog.dismiss()
-            startActivity(Intent(applicationContext, faculty_view::class.java))
-        }
-        builder.setNegativeButton("No"){ dialog,_->
-            dialog.dismiss()
-        }
-        val alert = builder.create()
-        alert.show()
+    private fun deleteFaculty(email: String) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Faculty")
+            .setMessage("Do You Want To Delete This Faculty ?")
+            .setCancelable(true)
+            .setPositiveButton("Yes") { dialog,_ ->
+                viewModel.deleteFaculty(email)
+                dialog.dismiss()
+                startActivity(Intent(applicationContext, faculty_view::class.java))
+            }
+            .setNegativeButton("No"){ dialog,_ -> dialog.dismiss() }
+            .create().show()
     }
 
     private fun initView() {

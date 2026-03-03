@@ -29,79 +29,79 @@
         <activity
             android:name=".admin.Admin_panel"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".admin.Admin_view"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".assignment.assignment_add"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".assignment.assignment_view"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".faculty.faculty_add"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".faculty.Faculty_panel"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".faculty.Faculty"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".faculty.faculty_update"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".faculty.faculty_view"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".notice.notice_add"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".notice.notice_view"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".student.student_add"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".student.student_update"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".student.student_view"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".student.Student_panel"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".student.Student"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".AboutUs"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".admin.Admin"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".ContactUs"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, Faculty::class.java))
         }
 
-        onBackPressedDispatcher.addCallback {  }
+
     }
 
     private fun requestRuntimePermissionForLowerThanApi33() {

@@ -1,0 +1,98 @@
+[
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_admin.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_admin.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_admin_panel.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_admin_panel.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/card_assignment_data.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/card_assignment_data.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/card_notice_data.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/card_notice_data.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_student_panel.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_student_panel.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_student.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_student.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_student_view.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_student_view.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/admin_nav_header.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/admin_nav_header.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_faculty_update.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_faculty_update.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_student_update.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_student_update.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_assignment_view.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_assignment_view.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_faculty.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_faculty.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_notice_add.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_notice_add.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_notice_view.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_notice_view.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_faculty_view.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_faculty_view.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_faculty_add.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_faculty_add.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/card_student_data.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/card_student_data.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_assignment_add.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_assignment_add.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_faculty_panel.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_faculty_panel.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_student_add.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_student_add.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_main.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/card_faculty_data.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/card_faculty_data.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_admin_view.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_admin_view.xml"
+    },
+    {
+        "merged": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-40:/layout/activity_admin_create.xml",
+        "source": "com.m3.rajat.piyush.studymatealpha.app-main-43:/layout/activity_admin_create.xml"
+    }
+]

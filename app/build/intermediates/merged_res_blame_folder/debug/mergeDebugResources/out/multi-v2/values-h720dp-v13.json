@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-39:/values-h720dp-v13/values-h720dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\arsenic\\.gradle\\caches\\8.13\\transforms\\76fc0e9626acb5333fc0ddf11d342524\\transformed\\appcompat-1.7.1\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "66",
+                        "endOffsets": "117"
+                    }
+                }
+            ]
+        }
+    ]
+}

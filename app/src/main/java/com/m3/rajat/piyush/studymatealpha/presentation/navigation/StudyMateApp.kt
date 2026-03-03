@@ -26,6 +26,9 @@ import androidx.navigation.compose.rememberNavController
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.LoginScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.RoleSelectionScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.SplashScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.dashboard.AdminDashboardScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.dashboard.FacultyDashboardScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.dashboard.StudentDashboardScreen
 
 /**
  * Top-level navigation items for the application
@@ -200,13 +203,14 @@ fun StudyMateNavHost(
             )
         }
         composable(Screen.AdminDashboard.route) {
-            // Placeholder Home
-            Box(Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
-                Text(text = "Admin Dashboard", style = MaterialTheme.typography.headlineMedium)
-            }
+            AdminDashboardScreen()
         }
-        composable(Screen.NoticesFeed.route) {}
-        composable(Screen.Profile.route) {}
+        composable(Screen.FacultyDashboard.route) {
+            FacultyDashboardScreen()
+        }
+        composable(Screen.StudentDashboard.route) {
+            StudentDashboardScreen()
+        }
     }
 }
 

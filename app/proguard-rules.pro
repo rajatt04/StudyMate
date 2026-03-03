@@ -1,21 +1,59 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# ============================================
+# StudyMate Production ProGuard/R8 Rules
+# ============================================
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ---- General ----
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+-keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes Exceptions
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# ---- Room ----
+-keep class * extends androidx.room.RoomDatabase { *; }
+-keep @androidx.room.Entity class * { *; }
+-keep @androidx.room.Dao interface * { *; }
+-dontwarn androidx.room.**
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# ---- Hilt / Dagger ----
+-dontwarn dagger.**
+-keep class dagger.** { *; }
+-keep class javax.inject.** { *; }
+-keep class * extends dagger.hilt.android.internal.managers.ViewComponentManager { *; }
+-keepclasseswithmembers class * {
+    @dagger.* <methods>;
+}
+-keepclasseswithmembers class * {
+    @javax.inject.* <fields>;
+}
+-keepclasseswithmembers class * {
+    @javax.inject.* <methods>;
+}
+
+# ---- Kotlin Coroutines ----
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembers class kotlinx.coroutines.** {
+    volatile <fields>;
+}
+
+# ---- Kotlin Serialization (if used) ----
+-keepclassmembers class * {
+    @kotlinx.serialization.Serializable <fields>;
+}
+
+# ---- Compose ----
+-dontwarn androidx.compose.**
+
+# ---- Data classes (entities) ----
+-keep class com.m3.rajat.piyush.studymatealpha.data.local.entity.** { *; }
+
+# ---- Keep the Application class ----
+-keep class com.m3.rajat.piyush.studymatealpha.StudyMateAlpha { *; }
+
+# ---- Remove Log calls in release ----
+-assumenosideeffects class android.util.Log {
+    public static int v(...);
+    public static int d(...);
+    public static int i(...);
+}

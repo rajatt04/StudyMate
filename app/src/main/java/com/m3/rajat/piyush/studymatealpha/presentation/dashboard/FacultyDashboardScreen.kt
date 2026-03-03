@@ -26,6 +26,9 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -38,7 +41,9 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FacultyDashboardScreen() {
+fun FacultyDashboardScreen(
+    onNavigateToAddAssignment: () -> Unit = {}
+) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -48,6 +53,15 @@ fun FacultyDashboardScreen() {
                 title = { Text("Faculty Portal") },
                 scrollBehavior = scrollBehavior
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onNavigateToAddAssignment,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add Assignment")
+            }
         }
     ) { paddingValues ->
         LazyColumn(

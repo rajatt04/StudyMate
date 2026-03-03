@@ -10,26 +10,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,30 +41,54 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     role: String,
     onLoginSuccess: () -> Unit,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onNavigateToRegister: (() -> Unit)? = null,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(false) }
-    var isError by remember { mutableStateOf(false) }
-    
-    val scope = rememberCoroutineScope()
+
+    val uiState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Handle login success
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            onLoginSuccess()
+        }
+    }
+
+    // Show error message
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let { msg ->
+            snackbarHostState.showSnackbar(msg)
+            viewModel.clearError()
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("$role Login") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -85,18 +113,13 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             OutlinedTextField(
-                value = username,
-                onValueChange = { 
-                    username = it
-                    isError = false
-                },
-                label = { Text("Email / Username") },
-                leadingIcon = {
-                    Icon(imageVector = Icons.Default.Person, contentDescription = "Username Icon")
-                },
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                isError = isError,
+                isError = uiState.errorMessage != null,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
@@ -104,32 +127,23 @@ fun LoginScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = { 
-                    password = it
-                    isError = false
-                },
+                onValueChange = { password = it },
                 label = { Text("Password") },
-                leadingIcon = {
-                    Icon(imageVector = Icons.Default.Lock, contentDescription = "Password Icon")
-                },
+                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
                 trailingIcon = {
                     val image = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
-                    val description = if (passwordVisible) "Hide password" else "Show password"
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(imageVector = image, contentDescription = description)
+                        Icon(imageVector = image, contentDescription = null)
                     }
                 },
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                isError = isError,
+                isError = uiState.errorMessage != null,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 supportingText = {
-                    if (isError) {
-                        Text(
-                            text = "Invalid username or password",
-                            color = MaterialTheme.colorScheme.error
-                        )
+                    if (uiState.errorMessage != null) {
+                        Text(text = uiState.errorMessage!!, color = MaterialTheme.colorScheme.error)
                     }
                 }
             )
@@ -138,40 +152,32 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    if (username.isBlank() || password.isBlank()) {
-                        isError = true
-                        return@Button
-                    }
-                    isLoading = true
-                    scope.launch {
-                        delay(1500) // Simulate network call
-                        isLoading = false
-                        onLoginSuccess()
-                    }
+                    viewModel.login(email, password, role)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = !isLoading
+                enabled = !uiState.isLoading
             ) {
-                if (isLoading) {
+                if (uiState.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         color = MaterialTheme.colorScheme.onPrimary,
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text(
-                        text = "Sign In",
-                        style = MaterialTheme.typography.labelLarge
-                    )
+                    Text(text = "Sign In", style = MaterialTheme.typography.labelLarge)
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+            TextButton(onClick = { }) { Text("Forgot Password?") }
 
-            TextButton(onClick = { /* Navigate to Forgot Password */ }) {
-                Text("Forgot Password?")
+            if (role == "ADMIN" && onNavigateToRegister != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                TextButton(onClick = onNavigateToRegister) {
+                    Text("Don't have an account? Register")
+                }
             }
         }
     }

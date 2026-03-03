@@ -11,180 +11,108 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Campaign
-import androidx.compose.material.icons.filled.EventNote
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.m3.rajat.piyush.studymatealpha.presentation.common.LoadingScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.notices.NoticesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StudentDashboardScreen() {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+fun StudentDashboardScreen(
+    noticesViewModel: NoticesViewModel = hiltViewModel()
+) {
+    val noticesState by noticesViewModel.uiState.collectAsState()
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            LargeTopAppBar(
-                title = { Text("Hi, Piyush!") },
-                scrollBehavior = scrollBehavior
-            )
-        }
+        topBar = { TopAppBar(title = { Text("Student Dashboard") }) }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                AttendanceSummaryCard()
+        when {
+            noticesState.isLoading -> {
+                LoadingScreen(modifier = Modifier.padding(paddingValues))
             }
-
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-                SectionHeader("Upcoming Exams")
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(3) { index ->
-                        ExamCard(subject = "Mathematics ${index + 1}", date = "12 Oct 2026")
-                    }
-                }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(8.dp))
-                SectionHeader("Latest Notices")
-            }
-
-            items(3) {
-                ListItem(
-                    headlineContent = { Text("Holiday Declared on Tomorrow") },
-                    supportingContent = {
-                        Row {
-                            AssistChip(
-                                onClick = { },
-                                label = { Text("Urgent") }
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Posted by Principal", modifier = Modifier.align(Alignment.CenterVertically), style = MaterialTheme.typography.labelSmall)
+                    // Attendance overview
+                    item {
+                        OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column {
+                                    Text("Attendance Overview", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                                    Text("Current Month", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                                Box(contentAlignment = Alignment.Center) {
+                                    CircularProgressIndicator(
+                                        progress = { 0.85f },
+                                        modifier = Modifier.size(56.dp),
+                                        strokeWidth = 6.dp,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        trackColor = MaterialTheme.colorScheme.surfaceVariant
+                                    )
+                                    Text("85%", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                                }
+                            }
                         }
-                    },
-                    leadingContent = {
-                        Icon(
-                            Icons.Default.Campaign,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
                     }
-                )
-            }
-        }
-    }
-}
 
-@Composable
-private fun SectionHeader(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(bottom = 8.dp)
-    )
-}
+                    // Recent Notices
+                    item {
+                        Text("Recent Notices", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
+                    }
 
-@Composable
-private fun AttendanceSummaryCard() {
-    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column {
-                Text(
-                    text = "Overall Attendance",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = "You are doing great!",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                FilledTonalButton(onClick = { /* TODO */ }) {
-                    Text("View Detail")
+                    if (noticesState.notices.isEmpty()) {
+                        item {
+                            Text("No notices available.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    } else {
+                        items(noticesState.notices.take(5)) { notice ->
+                            OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(Icons.Default.Campaign, null, tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(20.dp))
+                                    Column(modifier = Modifier.padding(start = 12.dp)) {
+                                        Text(notice.noticeName, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
+                                        Text(notice.noticeDate, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-
-            Box(contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(
-                    progress = { 0.85f },
-                    modifier = Modifier.size(72.dp),
-                    strokeWidth = 6.dp,
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-                Text(
-                    text = "85%",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ExamCard(subject: String, date: String) {
-    OutlinedCard(
-        modifier = Modifier.width(200.dp),
-        colors = CardDefaults.outlinedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Icon(
-                imageVector = Icons.Default.EventNote,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = subject,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = date,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
         }
     }
 }

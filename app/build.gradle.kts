@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -14,10 +15,9 @@ android {
     defaultConfig {
         applicationId = "com.m3.rajat.piyush.studymatealpha"
         minSdk = 26
-        //noinspection OldTargetApi
-        targetSdk = 34
-        versionCode = 8
-        versionName = "rajatt.7z"
+        targetSdk = 35
+        versionCode = 9
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -56,7 +56,6 @@ android {
         jvmToolchain(17)
     }
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 }
@@ -66,26 +65,34 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.constraintlayout)
     implementation(libs.androidx.activity)
-    // UI
-    implementation(libs.circleimageview)
+    implementation(libs.splashscreen)
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.androidx.test.core)
+
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     androidTestImplementation(libs.room.testing)
+
     // Lifecycle
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
-    // Test
-    androidTestImplementation(libs.coroutines.test)
-    androidTestImplementation(libs.androidx.test.core)
-    
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    // Security
+    implementation(libs.security.crypto)
+
     // Compose
     val composeBom = platform(libs.compose.bom)
     implementation(composeBom)
@@ -98,5 +105,11 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
     implementation(libs.activity.compose)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.compose.runtime.livedata)
     debugImplementation(libs.compose.ui.tooling)
+
+    // Compose UI Testing
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

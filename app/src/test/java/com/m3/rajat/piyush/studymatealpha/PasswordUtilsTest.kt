@@ -1,6 +1,6 @@
 package com.m3.rajat.piyush.studymatealpha
 
-import com.m3.rajat.piyush.studymatealpha.database.PasswordUtils
+import com.m3.rajat.piyush.studymatealpha.core.util.PasswordUtils
 import org.junit.Assert.*
 import org.junit.Test
 

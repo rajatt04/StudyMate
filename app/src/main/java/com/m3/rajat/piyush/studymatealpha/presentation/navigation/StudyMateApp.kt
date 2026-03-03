@@ -23,12 +23,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.m3.rajat.piyush.studymatealpha.presentation.academics.AttendanceScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.academics.GradesScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.academics.TimetableScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.LoginScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.auth.RegisterScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.chat.ChatScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.library.LibraryScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.notices.NoticesFeedScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.settings.ComponentShowcaseScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.settings.SettingsScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.RoleSelectionScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.SplashScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.dashboard.AdminDashboardScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.dashboard.FacultyDashboardScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.dashboard.StudentDashboardScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.user.AddFacultyScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.user.AddStudentScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.user.UserDirectoryScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.assignment.AddAssignmentScreen
 
 /**
  * Top-level navigation items for the application
@@ -199,17 +212,87 @@ fun StudyMateNavHost(
                         popUpTo(Screen.RoleSelection.route) { inclusive = true }
                     }
                 },
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToRegister = if (role == "ADMIN") {
+                    { navController.navigate(Screen.Register.route) }
+                } else null
+            )
+        }
+        composable(Screen.Register.route) {
+            RegisterScreen(
+                onRegisterSuccess = {
+                    navController.navigate("${Screen.Login.route}/ADMIN") {
+                        popUpTo(Screen.Register.route) { inclusive = true }
+                    }
+                },
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToLogin = {
+                    navController.navigate("${Screen.Login.route}/ADMIN") {
+                        popUpTo(Screen.Register.route) { inclusive = true }
+                    }
+                }
             )
         }
         composable(Screen.AdminDashboard.route) {
-            AdminDashboardScreen()
+            AdminDashboardScreen(
+                onNavigateToAddStudent = { navController.navigate(Screen.AddStudent.route) },
+                onNavigateToNotices = { navController.navigate(Screen.NoticesFeed.route) },
+                onNavigateToLibrary = { navController.navigate(Screen.Library.route) }
+            )
         }
         composable(Screen.FacultyDashboard.route) {
-            FacultyDashboardScreen()
+            FacultyDashboardScreen(
+                onNavigateToAddAssignment = { navController.navigate(Screen.AddAssignment.route) }
+            )
         }
         composable(Screen.StudentDashboard.route) {
             StudentDashboardScreen()
+        }
+        composable(Screen.AddStudent.route) {
+            AddStudentScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.AddAssignment.route) {
+            AddAssignmentScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.AddFaculty.route) {
+            AddFacultyScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.UserDirectory.route) {
+            UserDirectoryScreen()
+        }
+        composable(Screen.Timetable.route) {
+            TimetableScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.Grades.route) {
+            GradesScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.Attendance.route) {
+            AttendanceScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.NoticesFeed.route) {
+            NoticesFeedScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.Chat.route) {
+            ChatScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.Library.route) {
+            LibraryScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.Profile.route) {
+            // Re-routing profile button directly to Settings
+            SettingsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToComponents = { navController.navigate(Screen.ComponentShowcase.route) }
+            )
+        }
+        composable(Screen.Settings.route) {
+            SettingsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToComponents = { navController.navigate(Screen.ComponentShowcase.route) }
+            )
+        }
+        composable(Screen.ComponentShowcase.route) {
+            ComponentShowcaseScreen(onNavigateBack = { navController.popBackStack() })
         }
     }
 }

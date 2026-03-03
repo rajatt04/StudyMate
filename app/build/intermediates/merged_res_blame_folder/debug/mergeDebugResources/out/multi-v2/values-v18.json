@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.m3.rajat.piyush.studymatealpha.app-mergeDebugResources-78:/values-v18/values-v18.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\arsenic\\.gradle\\caches\\8.13\\transforms\\15e854c94dc3fccfd1074980d8b8fedb\\transformed\\appcompat-1.7.1\\res\\values-v18\\values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        }
+    ]
+}

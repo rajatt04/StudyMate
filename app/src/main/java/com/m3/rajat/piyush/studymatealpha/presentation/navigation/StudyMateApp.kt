@@ -33,6 +33,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.m3.rajat.piyush.studymatealpha.ui.theme.StudyMateMotion
 import com.m3.rajat.piyush.studymatealpha.presentation.academics.AttendanceScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.academics.GradesScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.academics.TimetableScreen
@@ -186,7 +187,11 @@ fun StudyMateNavHost(
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        modifier = modifier
+        modifier = modifier,
+        enterTransition = { StudyMateMotion.screenEnter },
+        exitTransition = { StudyMateMotion.screenExit },
+        popEnterTransition = { StudyMateMotion.screenPopEnter },
+        popExitTransition = { StudyMateMotion.screenPopExit }
     ) {
         // ==================== AUTH ====================
         composable(Screen.Splash.route) {

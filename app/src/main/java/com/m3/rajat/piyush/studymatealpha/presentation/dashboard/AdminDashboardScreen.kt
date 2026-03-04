@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.Class
 import androidx.compose.material.icons.filled.CoPresent
+import androidx.compose.material.icons.filled.FamilyRestroom
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.School
@@ -53,6 +54,8 @@ import com.m3.rajat.piyush.studymatealpha.presentation.common.LoadingScreen
 @Composable
 fun AdminDashboardScreen(
     onNavigateToAddStudent: () -> Unit = {},
+    onNavigateToAddFaculty: () -> Unit = {},
+    onNavigateToAddParent: () -> Unit = {},
     onNavigateToNotices: () -> Unit = {},
     onNavigateToLibrary: () -> Unit = {},
     viewModel: DashboardViewModel = hiltViewModel()
@@ -133,6 +136,8 @@ fun AdminDashboardScreen(
                     }
 
                     item { ActionCard(title = "Add Student", icon = Icons.Default.PersonAdd, onClick = onNavigateToAddStudent) }
+                    item { ActionCard(title = "Add Faculty", icon = Icons.Default.CoPresent, onClick = onNavigateToAddFaculty) }
+                    item { ActionCard(title = "Add Parent", icon = Icons.Default.FamilyRestroom, onClick = onNavigateToAddParent) }
                     item { ActionCard(title = "Manage Classes", icon = Icons.Default.Class) }
                     item { ActionCard(title = "Issue Notice", icon = Icons.Default.Campaign, onClick = onNavigateToNotices) }
                     item { ActionCard(title = "Library System", icon = Icons.AutoMirrored.Filled.MenuBook, onClick = onNavigateToLibrary) }

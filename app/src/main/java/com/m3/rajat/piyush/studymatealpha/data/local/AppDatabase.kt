@@ -14,7 +14,8 @@ import com.m3.rajat.piyush.studymatealpha.data.local.entity.*
         StudentEntity::class,
         NoticeEntity::class,
         AssignmentEntity::class,
-        ContactEntity::class
+        ContactEntity::class,
+        ParentEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -26,4 +27,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun noticeDao(): NoticeDao
     abstract fun assignmentDao(): AssignmentDao
     abstract fun contactDao(): ContactDao
+    abstract fun parentDao(): ParentDao
 }

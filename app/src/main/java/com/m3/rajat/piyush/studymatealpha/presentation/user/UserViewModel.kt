@@ -10,6 +10,7 @@ import com.m3.rajat.piyush.studymatealpha.domain.repository.StudentRepository
 import com.m3.rajat.piyush.studymatealpha.domain.usecase.student.AddStudentUseCase
 import com.m3.rajat.piyush.studymatealpha.domain.usecase.student.GetStudentsUseCase
 import com.m3.rajat.piyush.studymatealpha.core.util.PasswordUtils
+import com.m3.rajat.piyush.studymatealpha.domain.repository.ParentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,6 +35,7 @@ data class AddUserUiState(
 class UserViewModel @Inject constructor(
     private val studentRepository: StudentRepository,
     private val facultyRepository: FacultyRepository,
+    private val parentRepository: ParentRepository,
     private val addStudentUseCase: AddStudentUseCase,
     private val getStudentsUseCase: GetStudentsUseCase
 ) : ViewModel() {
@@ -102,6 +104,27 @@ class UserViewModel @Inject constructor(
                 loadUsers()
             } catch (e: Exception) {
                 _addUserState.value = AddUserUiState(errorMessage = "Failed to add faculty: ${e.message}")
+            }
+        }
+    }
+
+    fun addParent(name: String, email: String, password: String, studentId: Int? = null) {
+        viewModelScope.launch {
+            _addUserState.value = AddUserUiState(isLoading = true)
+            try {
+                val hashedPassword = PasswordUtils.hashPassword(password)
+                parentRepository.registerParent(
+                    com.m3.rajat.piyush.studymatealpha.data.local.entity.ParentEntity(
+                        parentName = name,
+                        parentEmail = email,
+                        parentPassword = hashedPassword,
+                        studentId = studentId
+                    )
+                )
+                _addUserState.value = AddUserUiState(isSuccess = true)
+                // Might want to reload users if parents are displayed in the directory later
+            } catch (e: Exception) {
+                _addUserState.value = AddUserUiState(errorMessage = "Failed to add parent: ${e.message}")
             }
         }
     }

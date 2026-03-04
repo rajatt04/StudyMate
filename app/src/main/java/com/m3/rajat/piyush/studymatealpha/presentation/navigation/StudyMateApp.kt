@@ -236,6 +236,8 @@ fun StudyMateNavHost(
         composable(Screen.AdminDashboard.route) {
             AdminDashboardScreen(
                 onNavigateToAddStudent = { navController.navigate(Screen.AddStudent.route) },
+                onNavigateToAddFaculty = { navController.navigate(Screen.AddFaculty.route) },
+                onNavigateToAddParent = { navController.navigate(Screen.AddParent.route) },
                 onNavigateToNotices = { navController.navigate(Screen.NoticesFeed.route) },
                 onNavigateToLibrary = { navController.navigate(Screen.Library.route) }
             )
@@ -256,6 +258,10 @@ fun StudyMateNavHost(
         }
         composable(Screen.AddFaculty.route) {
             AddFacultyScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.AddParent.route) {
+            // Need to import AddParentScreen
+            com.m3.rajat.piyush.studymatealpha.presentation.user.AddParentScreen(onNavigateBack = { navController.popBackStack() })
         }
         composable(Screen.UserDirectory.route) {
             UserDirectoryScreen()

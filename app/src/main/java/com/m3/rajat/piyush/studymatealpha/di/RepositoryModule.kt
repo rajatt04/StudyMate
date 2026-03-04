@@ -31,4 +31,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAssignmentRepository(impl: AssignmentRepositoryImpl): AssignmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindParentRepository(impl: ParentRepositoryImpl): ParentRepository
 }

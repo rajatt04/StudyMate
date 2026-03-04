@@ -46,4 +46,7 @@ object DatabaseModule {
 
     @Provides
     fun provideContactDao(db: AppDatabase): ContactDao = db.contactDao()
+
+    @Provides
+    fun provideParentDao(db: AppDatabase): ParentDao = db.parentDao()
 }

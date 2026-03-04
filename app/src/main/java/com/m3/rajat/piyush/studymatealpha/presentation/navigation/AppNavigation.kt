@@ -23,6 +23,7 @@ sealed class Screen(val route: String) {
     // Phase 5: User Management
     object AddStudent : Screen("add_student")
     object AddFaculty : Screen("add_faculty")
+    object AddParent : Screen("add_parent")
     object UserDirectory : Screen("user_directory")
     object AddAssignment : Screen("add_assignment")
     

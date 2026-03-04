@@ -1,9 +1,19 @@
 package com.m3.rajat.piyush.studymatealpha.presentation.navigation
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.automirrored.filled.Message
@@ -26,8 +36,13 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -122,10 +137,11 @@ fun StudyMateApp(
             }
         },
         containerColor = MaterialTheme.colorScheme.background
-    ) { _ ->
+    ) { paddingValues ->
         Row(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
             if (showNavRail) {
                 StudyMateNavRail(
@@ -148,14 +164,59 @@ private fun StudyMateBottomBar(
     onNavigateToDestination: (String) -> Unit,
     currentRoute: String?
 ) {
-    NavigationBar {
-        destinations.forEach { destination ->
-            NavigationBarItem(
-                selected = currentRoute == destination.route,
-                onClick = { onNavigateToDestination(destination.route) },
-                icon = { Icon(imageVector = destination.icon, contentDescription = destination.label) },
-                label = { Text(destination.label) }
-            )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 20.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Row(
+            modifier = Modifier
+                .shadow(elevation = 16.dp, shape = RoundedCornerShape(32.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(32.dp)
+                )
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            destinations.forEach { destination ->
+                val selected = currentRoute == destination.route
+                
+                val iconColor by animateColorAsState(
+                    targetValue = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    animationSpec = StudyMateMotion.tweenStandard(),
+                    label = "iconColor"
+                )
+                
+                val indicatorColor by animateColorAsState(
+                    targetValue = if (selected) MaterialTheme.colorScheme.primary else androidx.compose.ui.graphics.Color.Transparent,
+                    animationSpec = StudyMateMotion.tweenStandard(),
+                    label = "indicatorColor"
+                )
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(48.dp)
+                        .clip(CircleShape)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { onNavigateToDestination(destination.route) }
+                        )
+                        .background(indicatorColor),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = destination.icon,
+                        contentDescription = destination.label,
+                        tint = iconColor,
+                        modifier = Modifier.size(26.dp)
+                    )
+                }
+            }
         }
     }
 }

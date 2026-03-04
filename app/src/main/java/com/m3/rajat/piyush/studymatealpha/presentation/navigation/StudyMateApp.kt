@@ -121,11 +121,10 @@ fun StudyMateApp(
             }
         },
         containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
+    ) { _ ->
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
         ) {
             if (showNavRail) {
                 StudyMateNavRail(

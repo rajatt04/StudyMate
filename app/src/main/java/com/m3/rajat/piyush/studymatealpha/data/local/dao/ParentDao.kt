@@ -16,4 +16,7 @@ interface ParentDao {
 
     @Query("SELECT * FROM tbl_parent WHERE parent_id = :id")
     suspend fun getParentById(id: Int): ParentEntity?
+
+    @Query("SELECT COUNT(*) FROM tbl_parent")
+    suspend fun getCount(): Int
 }

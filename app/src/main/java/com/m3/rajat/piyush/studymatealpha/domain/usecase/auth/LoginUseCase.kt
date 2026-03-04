@@ -4,24 +4,27 @@ import com.m3.rajat.piyush.studymatealpha.core.util.PasswordUtils
 import com.m3.rajat.piyush.studymatealpha.core.util.Resource
 import com.m3.rajat.piyush.studymatealpha.domain.repository.AdminRepository
 import com.m3.rajat.piyush.studymatealpha.domain.repository.FacultyRepository
+import com.m3.rajat.piyush.studymatealpha.domain.repository.ParentRepository
 import com.m3.rajat.piyush.studymatealpha.domain.repository.StudentRepository
 import javax.inject.Inject
 
 /**
  * Use case that handles authentication for all user roles.
- * Verifies credentials against the database using password hashing.
+ * Validates input, verifies credentials against the database using password hashing.
  */
 class LoginUseCase @Inject constructor(
     private val adminRepository: AdminRepository,
     private val studentRepository: StudentRepository,
-    private val facultyRepository: FacultyRepository
+    private val facultyRepository: FacultyRepository,
+    private val parentRepository: ParentRepository
 ) {
 
     data class LoginResult(
         val success: Boolean,
         val userId: Int = -1,
         val userName: String = "",
-        val userEmail: String = ""
+        val userEmail: String = "",
+        val role: String = ""
     )
 
     suspend operator fun invoke(
@@ -29,15 +32,26 @@ class LoginUseCase @Inject constructor(
         password: String,
         role: String
     ): Resource<LoginResult> {
+        // Input validation
         if (email.isBlank() || password.isBlank()) {
             return Resource.Error("Email and password cannot be empty")
         }
 
+        val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+        if (!emailRegex.matches(email.trim())) {
+            return Resource.Error("Please enter a valid email address")
+        }
+
+        if (password.length < 6) {
+            return Resource.Error("Password must be at least 6 characters")
+        }
+
         return try {
             when (role.uppercase()) {
-                "ADMIN" -> authenticateAdmin(email, password)
-                "STUDENT" -> authenticateStudent(email, password)
-                "FACULTY" -> authenticateFaculty(email, password)
+                "ADMIN" -> authenticateAdmin(email.trim(), password)
+                "STUDENT" -> authenticateStudent(email.trim(), password)
+                "FACULTY" -> authenticateFaculty(email.trim(), password)
+                "PARENT" -> authenticateParent(email.trim(), password)
                 else -> Resource.Error("Unknown role: $role")
             }
         } catch (e: Exception) {
@@ -55,7 +69,8 @@ class LoginUseCase @Inject constructor(
                     success = true,
                     userId = admin.adminId ?: -1,
                     userName = admin.adminName,
-                    userEmail = admin.adminEmail
+                    userEmail = admin.adminEmail,
+                    role = "ADMIN"
                 )
             )
         } else {
@@ -73,7 +88,8 @@ class LoginUseCase @Inject constructor(
                     success = true,
                     userId = student.studentId,
                     userName = student.studentName,
-                    userEmail = student.studentEmail
+                    userEmail = student.studentEmail,
+                    role = "STUDENT"
                 )
             )
         } else {
@@ -91,7 +107,27 @@ class LoginUseCase @Inject constructor(
                     success = true,
                     userId = faculty.facultyId,
                     userName = faculty.facultyName,
-                    userEmail = faculty.facultyEmail
+                    userEmail = faculty.facultyEmail,
+                    role = "FACULTY"
+                )
+            )
+        } else {
+            Resource.Error("Invalid password")
+        }
+    }
+
+    private suspend fun authenticateParent(email: String, password: String): Resource<LoginResult> {
+        val parent = parentRepository.getParentByEmail(email)
+            ?: return Resource.Error("Account not found")
+
+        return if (PasswordUtils.verifyPassword(password, parent.parentPassword)) {
+            Resource.Success(
+                LoginResult(
+                    success = true,
+                    userId = parent.parentId,
+                    userName = parent.parentName,
+                    userEmail = parent.parentEmail,
+                    role = "PARENT"
                 )
             )
         } else {

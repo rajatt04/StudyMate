@@ -2,6 +2,7 @@ package com.m3.rajat.piyush.studymatealpha.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+// ─── Material 3 Light Color Scheme ───────────────────────────────────
 val md_theme_light_primary = Color(0xFF006497)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFCCE5FF)
@@ -33,6 +34,7 @@ val md_theme_light_surfaceTint = Color(0xFF006497)
 val md_theme_light_outlineVariant = Color(0xFFC2C7CE)
 val md_theme_light_scrim = Color(0xFF000000)
 
+// ─── Material 3 Dark Color Scheme ────────────────────────────────────
 val md_theme_dark_primary = Color(0xFF92CCFF)
 val md_theme_dark_onPrimary = Color(0xFF003351)
 val md_theme_dark_primaryContainer = Color(0xFF004B73)
@@ -63,3 +65,27 @@ val md_theme_dark_shadow = Color(0xFF000000)
 val md_theme_dark_surfaceTint = Color(0xFF92CCFF)
 val md_theme_dark_outlineVariant = Color(0xFF41474D)
 val md_theme_dark_scrim = Color(0xFF000000)
+
+// ─── Role-based Accent Colors ────────────────────────────────────────
+object RoleColors {
+    val studentPrimary = Color(0xFF1B6EF3)     // Vibrant blue
+    val studentContainer = Color(0xFFD5E3FF)
+    val facultyPrimary = Color(0xFF00696E)      // Teal
+    val facultyContainer = Color(0xFF6FF6FC)
+    val adminPrimary = Color(0xFF8B5000)        // Warm amber
+    val adminContainer = Color(0xFFFFDDB3)
+    val parentPrimary = Color(0xFF6750A4)       // Deep purple
+    val parentContainer = Color(0xFFE8DEF8)
+}
+
+// ─── Semantic Colors (for dashboard stats, badges, status chips) ─────
+object SemanticColors {
+    val success = Color(0xFF1B8A3C)
+    val successContainer = Color(0xFFBAF5C9)
+    val warning = Color(0xFFC5920E)
+    val warningContainer = Color(0xFFFFE08B)
+    val info = Color(0xFF0061A4)
+    val infoContainer = Color(0xFFD1E4FF)
+    val onSuccessContainer = Color(0xFF002108)
+    val onWarningContainer = Color(0xFF1D1D00)
+}

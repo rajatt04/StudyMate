@@ -35,4 +35,24 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindParentRepository(impl: ParentRepositoryImpl): ParentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAttendanceRepository(impl: AttendanceRepositoryImpl): AttendanceRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMarksRepository(impl: MarksRepositoryImpl): MarksRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFeeRepository(impl: FeeRepositoryImpl): FeeRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTimetableRepository(impl: TimetableRepositoryImpl): TimetableRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindMessageRepository(impl: MessageRepositoryImpl): MessageRepository
 }

@@ -13,12 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Assignment
+import androidx.compose.material.icons.automirrored.filled.Assignment
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,7 +27,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -79,7 +78,7 @@ fun FacultyDashboardScreen(
                     ActionSummaryCard(
                         title = "To Grade",
                         count = 12,
-                        icon = Icons.Default.Assignment,
+                        icon = Icons.AutoMirrored.Filled.Assignment,
                         modifier = Modifier.weight(1f)
                     )
                     ActionSummaryCard(
@@ -107,7 +106,7 @@ fun FacultyDashboardScreen(
                     time = "${10 + index}:00 AM - ${11 + index}:00 AM",
                     isCompleted = index < 1
                 )
-                if (index < 3) Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                if (index < 3) HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             }
         }
     }

@@ -6,4 +6,5 @@ interface ParentRepository {
     suspend fun registerParent(parent: ParentEntity)
     suspend fun getParentByEmail(email: String): ParentEntity?
     suspend fun getParentById(id: Int): ParentEntity?
+    suspend fun getCount(): Int
 }

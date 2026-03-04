@@ -93,6 +93,9 @@ dependencies {
     // Security
     implementation(libs.security.crypto)
 
+    // DataStore
+    implementation(libs.datastore.preferences)
+
     // Compose
     val composeBom = platform(libs.compose.bom)
     implementation(composeBom)

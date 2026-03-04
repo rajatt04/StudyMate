@@ -19,4 +19,8 @@ class ParentRepositoryImpl @Inject constructor(
     override suspend fun getParentById(id: Int): ParentEntity? {
         return parentDao.getParentById(id)
     }
+
+    override suspend fun getCount(): Int {
+        return parentDao.getCount()
+    }
 }

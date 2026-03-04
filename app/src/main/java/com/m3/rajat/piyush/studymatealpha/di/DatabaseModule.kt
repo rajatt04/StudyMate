@@ -25,6 +25,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "studymate.db"
         )
+        .addMigrations(AppDatabase.MIGRATION_1_2)
         .fallbackToDestructiveMigration()
         .build()
     }
@@ -49,4 +50,19 @@ object DatabaseModule {
 
     @Provides
     fun provideParentDao(db: AppDatabase): ParentDao = db.parentDao()
+
+    @Provides
+    fun provideAttendanceDao(db: AppDatabase): AttendanceDao = db.attendanceDao()
+
+    @Provides
+    fun provideMarksDao(db: AppDatabase): MarksDao = db.marksDao()
+
+    @Provides
+    fun provideFeeDao(db: AppDatabase): FeeDao = db.feeDao()
+
+    @Provides
+    fun provideTimetableDao(db: AppDatabase): TimetableDao = db.timetableDao()
+
+    @Provides
+    fun provideMessageDao(db: AppDatabase): MessageDao = db.messageDao()
 }

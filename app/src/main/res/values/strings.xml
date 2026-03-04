@@ -94,4 +94,33 @@
     <string name="create_an_new_account">Create an new account</string>
     <string name="enter_admin_password">Enter Admin Password</string>
     <string name="create_your_password">Create your password</string>
+
+    <!-- Auth Screens -->
+    <string name="select_your_role">Select Your Role</string>
+    <string name="welcome_to_studymate">Welcome to StudyMate</string>
+    <string name="choose_account_type">Choose your account type to proceed.</string>
+    <string name="role_student">Student</string>
+    <string name="role_student_desc">View timetable, assignments &amp; attendance</string>
+    <string name="role_student_detail">Access your class schedule, submit assignments, track attendance, and view marks analytics all in one place.</string>
+    <string name="role_faculty">Faculty</string>
+    <string name="role_faculty_desc">Manage classes, grading &amp; notices</string>
+    <string name="role_faculty_detail">Mark attendance, upload assignments, enter marks, post notices, and analyze class performance.</string>
+    <string name="role_admin">Administrator</string>
+    <string name="role_admin_desc">Full school management &amp; settings</string>
+    <string name="role_admin_detail">Add/remove students and faculty, manage classes, track fees, configure system settings, and backup data.</string>
+    <string name="role_parent">Parent</string>
+    <string name="role_parent_desc">Track ward\'s performance and fee</string>
+    <string name="role_parent_detail">Monitor your child\'s attendance, marks, fee status, and communicate directly with faculty.</string>
+    <string name="login_title">%1$s Login</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="sign_in_subtitle">Sign in to your %1$s account</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="sign_in">Sign In</string>
+    <string name="retry_in_seconds">Retry in %1$ds</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="no_account_register">Don\'t have an account? Register</string>
+    <string name="navigate_back">Navigate back</string>
+    <string name="tap_to_learn_more">Tap to learn more</string>
 </resources>

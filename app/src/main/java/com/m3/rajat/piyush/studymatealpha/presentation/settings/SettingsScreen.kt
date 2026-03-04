@@ -14,7 +14,7 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Widgets
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -95,7 +95,7 @@ fun SettingsScreen(
             }
             
             item {
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                 SettingsCategoryHeader("Developer & Design")
                 
                 ListItem(
@@ -114,7 +114,7 @@ fun SettingsScreen(
             }
 
             item {
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                 SettingsCategoryHeader("Account")
                 
                 ListItem(

@@ -79,6 +79,15 @@ import com.m3.rajat.piyush.studymatealpha.presentation.user.AddFacultyScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.user.AddParentScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.user.AddStudentScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.user.UserDirectoryScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.auth.ForgotPasswordScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.admin.ClassManagementScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.admin.FeeTrackingScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.admin.SystemSettingsScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.admin.DatabaseBackupScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.faculty.ClassPerformanceScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.parent.TrackWardScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.parent.ParentAttendanceScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.parent.ParentFeesScreen
 
 /**
  * Top-level navigation items for role-specific bottom nav
@@ -324,6 +333,9 @@ fun StudyMateNavHost(
                 }
             )
         }
+        composable(Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(onNavigateBack = { navController.popBackStack() })
+        }
 
         // ==================== ADMIN ====================
         composable(Screen.AdminDashboard.route) {
@@ -331,6 +343,7 @@ fun StudyMateNavHost(
                 onNavigateToAddStudent = { navController.navigate(Screen.AddStudent.route) },
                 onNavigateToAddFaculty = { navController.navigate(Screen.AddFaculty.route) },
                 onNavigateToAddParent = { navController.navigate(Screen.AddParent.route) },
+                onNavigateToClassManagement = { navController.navigate(Screen.ClassManagement.route) },
                 onNavigateToNotices = { navController.navigate(Screen.NoticesFeed.route) },
                 onNavigateToLibrary = { navController.navigate(Screen.Library.route) }
             )
@@ -347,11 +360,27 @@ fun StudyMateNavHost(
         composable(Screen.UserDirectory.route) {
             UserDirectoryScreen()
         }
+        composable(Screen.ClassManagement.route) {
+            ClassManagementScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.FeeTracking.route) {
+            FeeTrackingScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.SystemSettings.route) {
+            SystemSettingsScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.DatabaseBackup.route) {
+            DatabaseBackupScreen(onNavigateBack = { navController.popBackStack() })
+        }
 
         // ==================== FACULTY ====================
         composable(Screen.FacultyDashboard.route) {
             FacultyDashboardScreen(
-                onNavigateToAddAssignment = { navController.navigate(Screen.AddAssignment.route) }
+                onNavigateToAddAssignment = { navController.navigate(Screen.AddAssignment.route) },
+                onNavigateToMarkAttendance = { navController.navigate(Screen.MarkAttendance.route) },
+                onNavigateToEnterMarks = { navController.navigate(Screen.EnterMarks.route) },
+                onNavigateToClassPerformance = { navController.navigate(Screen.ClassPerformance.route) },
+                onNavigateToNotices = { navController.navigate(Screen.NoticesFeed.route) }
             )
         }
         composable(Screen.AddAssignment.route) {
@@ -363,10 +392,17 @@ fun StudyMateNavHost(
         composable(Screen.EnterMarks.route) {
             EnterMarksScreen(onNavigateBack = { navController.popBackStack() })
         }
+        composable(Screen.ClassPerformance.route) {
+            ClassPerformanceScreen(onNavigateBack = { navController.popBackStack() })
+        }
 
         // ==================== STUDENT ====================
         composable(Screen.StudentDashboard.route) {
-            StudentDashboardScreen()
+            StudentDashboardScreen(
+                onNavigateToFeeStatus = { navController.navigate(Screen.FeeStatus.route) },
+                onNavigateToAssignmentSubmission = { navController.navigate(Screen.AssignmentSubmission.route) },
+                onNavigateToNotices = { navController.navigate(Screen.NoticesFeed.route) }
+            )
         }
         composable(Screen.AssignmentSubmission.route) {
             AssignmentSubmissionScreen(onNavigateBack = { navController.popBackStack() })
@@ -374,7 +410,22 @@ fun StudyMateNavHost(
 
         // ==================== PARENT ====================
         composable(Screen.ParentDashboard.route) {
-            ParentDashboardScreen()
+            ParentDashboardScreen(
+                onNavigateToTrackWard = { navController.navigate(Screen.TrackWard.route) },
+                onNavigateToAttendance = { navController.navigate(Screen.ParentAttendance.route) },
+                onNavigateToMarks = { navController.navigate(Screen.Grades.route) },
+                onNavigateToFees = { navController.navigate(Screen.ParentFees.route) },
+                onNavigateToMessages = { navController.navigate(Screen.DirectMessage.route) }
+            )
+        }
+        composable(Screen.TrackWard.route) {
+            TrackWardScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.ParentAttendance.route) {
+            ParentAttendanceScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(Screen.ParentFees.route) {
+            ParentFeesScreen(onNavigateBack = { navController.popBackStack() })
         }
 
         // ==================== SHARED ====================

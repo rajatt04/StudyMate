@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.notices
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.notices
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,7 +34,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.m3.rajat.piyush.studymatealpha.presentation.common.EmptyStateScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.common.LoadingScreen
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -61,7 +62,7 @@ fun NoticesFeedScreen(
     var noticeTitle by remember { mutableStateOf("") }
     var noticeDescription by remember { mutableStateOf("") }
 
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(isRefreshing) {
@@ -131,14 +132,12 @@ fun NoticesFeedScreen(
                     LoadingScreen()
                 }
                 uiState.notices.isEmpty() -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("No notices yet. Tap + to create one.", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    EmptyStateScreen(
+                        title = "No Notices",
+                        subtitle = "There are no notices to display right now. Tap + to add a new notice."
+                    )
                 }
-            }
-            else -> {
+                else -> {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(16.dp),

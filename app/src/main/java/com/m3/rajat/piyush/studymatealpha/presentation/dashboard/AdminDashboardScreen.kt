@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,7 +40,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -62,12 +62,13 @@ fun AdminDashboardScreen(
     onNavigateToAddStudent: () -> Unit = {},
     onNavigateToAddFaculty: () -> Unit = {},
     onNavigateToAddParent: () -> Unit = {},
+    onNavigateToClassManagement: () -> Unit = {},
     onNavigateToNotices: () -> Unit = {},
     onNavigateToLibrary: () -> Unit = {},
     viewModel: AdminViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    val uiState by viewModel.state.collectAsState()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(isRefreshing) {
@@ -170,7 +171,10 @@ fun AdminDashboardScreen(
 
                     // Financial Overview
                     item(span = { GridItemSpan(2) }) {
-                        OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                        OutlinedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.large
+                        ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
                                     "Financial Summary",
@@ -184,7 +188,7 @@ fun AdminDashboardScreen(
                                 ) {
                                     Column {
                                         Text(
-                                            "₹${uiState.totalFeesCollected.toInt()}",
+                                            "â‚¹${uiState.totalFeesCollected.toInt()}",
                                             style = MaterialTheme.typography.headlineSmall,
                                             fontWeight = FontWeight.Bold,
                                             color = MaterialTheme.colorScheme.primary
@@ -193,7 +197,7 @@ fun AdminDashboardScreen(
                                     }
                                     Column(horizontalAlignment = Alignment.End) {
                                         Text(
-                                            "₹${uiState.totalFeesPending.toInt()}",
+                                            "â‚¹${uiState.totalFeesPending.toInt()}",
                                             style = MaterialTheme.typography.headlineSmall,
                                             fontWeight = FontWeight.Bold,
                                             color = if (uiState.totalFeesPending > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
@@ -204,7 +208,7 @@ fun AdminDashboardScreen(
                                 if (uiState.overdueCount > 0) {
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Text(
-                                        "⚠️ ${uiState.overdueCount} overdue payment(s)",
+                                        "âš ï¸ ${uiState.overdueCount} overdue payment(s)",
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.error
                                     )
@@ -226,7 +230,7 @@ fun AdminDashboardScreen(
                     item { ActionCard(title = "Add Student", icon = Icons.Default.PersonAdd, onClick = onNavigateToAddStudent) }
                     item { ActionCard(title = "Add Faculty", icon = Icons.Default.CoPresent, onClick = onNavigateToAddFaculty) }
                     item { ActionCard(title = "Add Parent", icon = Icons.Default.FamilyRestroom, onClick = onNavigateToAddParent) }
-                    item { ActionCard(title = "Manage Classes", icon = Icons.Default.Class) }
+                    item { ActionCard(title = "Manage Classes", icon = Icons.Default.Class, onClick = onNavigateToClassManagement) }
                     item { ActionCard(title = "Issue Notice", icon = Icons.Default.Campaign, onClick = onNavigateToNotices) }
                     item { ActionCard(title = "Library System", icon = Icons.AutoMirrored.Filled.MenuBook, onClick = onNavigateToLibrary) }
                 }
@@ -240,6 +244,7 @@ fun AdminDashboardScreen(
 private fun MetricCard(title: String, value: String, icon: ImageVector, trendStr: String) {
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -261,7 +266,10 @@ private fun MetricCard(title: String, value: String, icon: ImageVector, trendStr
 private fun StaffAttendanceCard(presentCount: Int, totalCount: Int) {
     val progress = presentCount.toFloat() / totalCount.toFloat()
     val pct = (progress * 100).toInt()
-    OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+    OutlinedCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -285,6 +293,7 @@ private fun ActionCard(title: String, icon: ImageVector, onClick: () -> Unit = {
     ElevatedCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
         colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {

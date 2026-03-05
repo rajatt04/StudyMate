@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.auth
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.auth
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -49,7 +49,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -91,7 +91,7 @@ fun RoleSelectionScreen(
     onRoleSelected: (String) -> Unit,
     viewModel: RoleSelectionViewModel = hiltViewModel()
 ) {
-    val savedRole by viewModel.savedRole.collectAsState()
+    val savedRole by viewModel.savedRole.collectAsStateWithLifecycle()
     var expandedRole by rememberSaveable { mutableStateOf<String?>(null) }
     var navigationInProgress by remember { mutableStateOf(false) }
     val extendedColors = LocalExtendedColors.current
@@ -112,7 +112,7 @@ fun RoleSelectionScreen(
         )
     }
 
-    // ─── Staggered entrance ──────────────────────────────────────────
+    // â”€â”€â”€ Staggered entrance â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     val visibilityStates = remember { roles.map { mutableStateOf(false) } }
     LaunchedEffect(Unit) {
         roles.forEachIndexed { index, _ ->
@@ -135,7 +135,7 @@ fun RoleSelectionScreen(
         ) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            // ─── Header ──────────────────────────────────────────────
+            // â”€â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             Text(
                 text = stringResource(R.string.welcome_to_studymate),
                 style = MaterialTheme.typography.displaySmall.copy(
@@ -152,7 +152,7 @@ fun RoleSelectionScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // ─── Role Cards ──────────────────────────────────────────
+            // â”€â”€â”€ Role Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             roles.forEachIndexed { index, roleInfo ->
                 AnimatedVisibility(
                     visible = visibilityStates[index].value,
@@ -196,7 +196,7 @@ private fun PremiumRoleCard(
 ) {
     val extendedColors = LocalExtendedColors.current
 
-    // ─── Animated values ─────────────────────────────────────────────
+    // â”€â”€â”€ Animated values â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     val scale by animateFloatAsState(
         targetValue = if (isSelected) 1.0f else 1f,
         animationSpec = spring(stiffness = Spring.StiffnessMedium),
@@ -250,7 +250,7 @@ private fun PremiumRoleCard(
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            // ─── Accent bar ──────────────────────────────────────
+            // â”€â”€â”€ Accent bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
             if (accentBarWidth > 0.dp) {
                 Box(
                     modifier = Modifier
@@ -270,7 +270,7 @@ private fun PremiumRoleCard(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // ─── Icon in tonal circle ────────────────────
+                    // â”€â”€â”€ Icon in tonal circle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                     Surface(
                         shape = CircleShape,
                         color = iconContainerColor,
@@ -303,7 +303,7 @@ private fun PremiumRoleCard(
                         )
                     }
 
-                    // ─── Expand / Navigate ───────────────────────
+                    // â”€â”€â”€ Expand / Navigate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                     IconButton(
                         onClick = onExpandToggle,
                         modifier = Modifier.semantics {
@@ -327,7 +327,7 @@ private fun PremiumRoleCard(
                     }
                 }
 
-                // ─── Expandable detail ───────────────────────────────
+                // â”€â”€â”€ Expandable detail â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 AnimatedVisibility(
                     visible = isExpanded,
                     enter = expandVertically(

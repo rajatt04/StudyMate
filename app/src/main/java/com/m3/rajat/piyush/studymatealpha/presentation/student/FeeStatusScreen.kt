@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.student
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.student
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -47,7 +47,7 @@ fun FeeStatusScreen(
     onNavigateBack: () -> Unit,
     viewModel: StudentViewModel = hiltViewModel()
 ) {
-    val feeState by viewModel.feeState.collectAsState()
+    val feeState by viewModel.feeState.collectAsStateWithLifecycle()
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { viewModel.loadFees() }
@@ -115,7 +115,7 @@ fun FeeStatusScreen(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        text = "₹${String.format("%.0f", feeState.totalPaid)}",
+                                        text = "â‚¹${String.format("%.0f", feeState.totalPaid)}",
                                         style = MaterialTheme.typography.headlineSmall,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.primary
@@ -128,7 +128,7 @@ fun FeeStatusScreen(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        text = "₹${String.format("%.0f", feeState.totalPending)}",
+                                        text = "â‚¹${String.format("%.0f", feeState.totalPending)}",
                                         style = MaterialTheme.typography.headlineSmall,
                                         fontWeight = FontWeight.Bold,
                                         color = if (feeState.totalPending > 0) MaterialTheme.colorScheme.error
@@ -185,7 +185,7 @@ private fun FeeCard(
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .semantics { contentDescription = "$description: ₹$amount, Status: $status" }
+            .semantics { contentDescription = "$description: â‚¹$amount, Status: $status" }
     ) {
         Row(
             modifier = Modifier
@@ -216,7 +216,7 @@ private fun FeeCard(
             }
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = "₹${String.format("%.0f", amount)}",
+                    text = "â‚¹${String.format("%.0f", amount)}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface

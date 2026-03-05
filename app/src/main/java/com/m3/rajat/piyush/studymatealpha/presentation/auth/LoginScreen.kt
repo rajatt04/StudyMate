@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.auth
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.auth
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -55,7 +55,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -97,14 +97,14 @@ fun LoginScreen(
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     var rememberMe by rememberSaveable { mutableStateOf(false) }
 
-    val uiState by viewModel.uiState.collectAsState()
-    val savedEmail by viewModel.rememberMeEmail.collectAsState()
-    val isRememberMeEnabled by viewModel.isRememberMeEnabled.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val savedEmail by viewModel.rememberMeEmail.collectAsStateWithLifecycle()
+    val isRememberMeEnabled by viewModel.isRememberMeEnabled.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val focusManager = LocalFocusManager.current
     val extendedColors = LocalExtendedColors.current
 
-    // ─── Validation ──────────────────────────────────────────────────
+    // â”€â”€â”€ Validation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     val emailRegex = remember { Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$") }
     val isEmailValid by remember { derivedStateOf { emailRegex.matches(email.trim()) } }
     val isPasswordValid by remember { derivedStateOf { password.length >= 6 } }
@@ -112,7 +112,7 @@ fun LoginScreen(
     val emailError by remember { derivedStateOf { if (email.isEmpty() || isEmailValid) null else "Enter a valid email" } }
     val passwordError by remember { derivedStateOf { if (password.isEmpty() || isPasswordValid) null else "Min. 6 characters" } }
 
-    // ─── Error shake animation ───────────────────────────────────────
+    // â”€â”€â”€ Error shake animation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     val shakeOffset = remember { Animatable(0f) }
     LaunchedEffect(uiState) {
         if (uiState is LoginUiState.Error) {
@@ -124,7 +124,7 @@ fun LoginScreen(
         }
     }
 
-    // ─── Remember-me prefill ─────────────────────────────────────────
+    // â”€â”€â”€ Remember-me prefill â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     LaunchedEffect(savedEmail, isRememberMeEnabled) {
         if (isRememberMeEnabled && !savedEmail.isNullOrBlank() && email.isEmpty()) {
             email = savedEmail ?: ""
@@ -132,7 +132,7 @@ fun LoginScreen(
         }
     }
 
-    // ─── State handlers ──────────────────────────────────────────────
+    // â”€â”€â”€ State handlers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     LaunchedEffect(uiState) {
         when (uiState) {
             is LoginUiState.Success -> onLoginSuccess()
@@ -169,7 +169,7 @@ fun LoginScreen(
                     .padding(horizontal = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // ─── Back button ─────────────────────────────────────
+                // â”€â”€â”€ Back button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -188,7 +188,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // ─── Role icon header ────────────────────────────────
+                // â”€â”€â”€ Role icon header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 Surface(
                     shape = CircleShape,
                     color = roleAccent.copy(alpha = 0.12f),
@@ -227,7 +227,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // ─── Form Card ───────────────────────────────────────
+                // â”€â”€â”€ Form Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -361,7 +361,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // ─── Sign In button ──────────────────────────────────
+                // â”€â”€â”€ Sign In button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 val isLoading = uiState is LoginUiState.Loading
                 val isRateLimited = uiState is LoginUiState.RateLimited
 
@@ -415,7 +415,7 @@ fun LoginScreen(
                     }
                 }
 
-                // ─── Error inline ────────────────────────────────────
+                // â”€â”€â”€ Error inline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                 AnimatedVisibility(
                     visible = uiState is LoginUiState.Error,
                     enter = fadeIn() + slideInVertically { it / 2 },

@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -23,6 +23,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CardDefaults
@@ -41,7 +43,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -61,9 +63,13 @@ import com.m3.rajat.piyush.studymatealpha.presentation.faculty.FacultyViewModel
 @Composable
 fun FacultyDashboardScreen(
     onNavigateToAddAssignment: () -> Unit = {},
+    onNavigateToMarkAttendance: () -> Unit = {},
+    onNavigateToEnterMarks: () -> Unit = {},
+    onNavigateToClassPerformance: () -> Unit = {},
+    onNavigateToNotices: () -> Unit = {},
     viewModel: FacultyViewModel = hiltViewModel()
 ) {
-    val state by viewModel.dashState.collectAsState()
+    val state by viewModel.dashState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
@@ -122,7 +128,7 @@ fun FacultyDashboardScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // ── Live Stats from DB ──
+                    // â”€â”€ Live Stats from DB â”€â”€
                     item(key = "stats") {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -149,7 +155,7 @@ fun FacultyDashboardScreen(
                         }
                     }
 
-                    // ── Quick Actions ──
+                    // â”€â”€ Quick Actions â”€â”€
                     item(key = "actions_header") {
                         Text(
                             "Quick Actions",
@@ -167,8 +173,40 @@ fun FacultyDashboardScreen(
                             onClick = onNavigateToAddAssignment
                         )
                     }
+                    item(key = "action_mark_attendance") {
+                        FacultyActionCard(
+                            title = "Mark Attendance",
+                            description = "Record student daily attendance",
+                            icon = Icons.Default.CheckCircle,
+                            onClick = onNavigateToMarkAttendance
+                        )
+                    }
+                    item(key = "action_enter_marks") {
+                        FacultyActionCard(
+                            title = "Enter Marks",
+                            description = "Update student grades",
+                            icon = Icons.Default.BarChart,
+                            onClick = onNavigateToEnterMarks
+                        )
+                    }
+                    item(key = "action_class_perf") {
+                        FacultyActionCard(
+                            title = "Class Performance",
+                            description = "View academic analytics",
+                            icon = Icons.Default.School,
+                            onClick = onNavigateToClassPerformance
+                        )
+                    }
+                    item(key = "action_notices") {
+                        FacultyActionCard(
+                            title = "Notices",
+                            description = "View or issue notices",
+                            icon = Icons.Default.Campaign,
+                            onClick = onNavigateToNotices
+                        )
+                    }
 
-                    // ── Summary ──
+                    // â”€â”€ Summary â”€â”€
                     item(key = "summary_header") {
                         Text(
                             "Overview",
@@ -181,6 +219,7 @@ fun FacultyDashboardScreen(
                     item(key = "summary") {
                         ElevatedCard(
                             modifier = Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.large,
                             elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
@@ -230,6 +269,7 @@ private fun FacultyStatCard(
 ) {
     ElevatedCard(
         modifier = modifier,
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -279,6 +319,7 @@ private fun FacultyActionCard(
     ElevatedCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
     ) {
         Row(

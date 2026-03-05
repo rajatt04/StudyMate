@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.assignment
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.assignment
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,7 +49,7 @@ fun AddAssignmentScreen(
     val assignmentTypes = listOf("Homework", "Project", "Quiz", "Exam", "Lab")
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val addState by viewModel.addState.collectAsState()
+    val addState by viewModel.addState.collectAsStateWithLifecycle()
 
     LaunchedEffect(addState.isSuccess) {
         if (addState.isSuccess) {

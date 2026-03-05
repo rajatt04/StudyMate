@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.user
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.user
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +35,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -66,7 +66,7 @@ fun AddStudentScreen(
     val datePickerState = rememberDatePickerState()
 
     val snackbarHostState = remember { SnackbarHostState() }
-    val addState by viewModel.addUserState.collectAsState()
+    val addState by viewModel.addUserState.collectAsStateWithLifecycle()
 
     LaunchedEffect(addState.isSuccess) {
         if (addState.isSuccess) {

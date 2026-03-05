@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -39,7 +39,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -58,9 +58,12 @@ import com.m3.rajat.piyush.studymatealpha.presentation.student.StudentViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentDashboardScreen(
+    onNavigateToFeeStatus: () -> Unit = {},
+    onNavigateToAssignmentSubmission: () -> Unit = {},
+    onNavigateToNotices: () -> Unit = {},
     viewModel: StudentViewModel = hiltViewModel()
 ) {
-    val state by viewModel.dashboardState.collectAsState()
+    val state by viewModel.dashboardState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
@@ -110,7 +113,7 @@ fun StudentDashboardScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // ── Live Stats Row ──
+                    // â”€â”€ Live Stats Row â”€â”€
                     item(key = "stats") {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -135,7 +138,7 @@ fun StudentDashboardScreen(
                         }
                     }
 
-                    // ── Pending Fees ──
+                    // â”€â”€ Pending Fees â”€â”€
                     if (state.pendingFees.isNotEmpty()) {
                         item(key = "fees_header") {
                             Text(
@@ -146,7 +149,11 @@ fun StudentDashboardScreen(
                             )
                         }
                         items(state.pendingFees, key = { it.feeId }) { fee ->
-                            OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                            OutlinedCard(
+                                onClick = onNavigateToFeeStatus,
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.large
+                            ) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -172,7 +179,7 @@ fun StudentDashboardScreen(
                                         )
                                     }
                                     Text(
-                                        "₹${fee.amount.toInt()}",
+                                        "â‚¹${fee.amount.toInt()}",
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.error
@@ -182,7 +189,7 @@ fun StudentDashboardScreen(
                         }
                     }
 
-                    // ── Upcoming Assignments ──
+                    // â”€â”€ Upcoming Assignments â”€â”€
                     item(key = "assign_header") {
                         Text(
                             "Upcoming Assignments",
@@ -195,14 +202,18 @@ fun StudentDashboardScreen(
                     if (state.upcomingAssignments.isEmpty()) {
                         item(key = "no_assign") {
                             Text(
-                                "No upcoming assignments 🎉",
+                                "No upcoming assignments ðŸŽ‰",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     } else {
                         items(state.upcomingAssignments, key = { it.assignmentName }) { assignment ->
-                            OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                            OutlinedCard(
+                                onClick = onNavigateToAssignmentSubmission,
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.large
+                            ) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -222,7 +233,7 @@ fun StudentDashboardScreen(
                                             fontWeight = FontWeight.Medium
                                         )
                                         Text(
-                                            "${assignment.assignmentType} • Due: ${assignment.assignmentSdate}",
+                                            "${assignment.assignmentType} â€¢ Due: ${assignment.assignmentSdate}",
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -232,7 +243,7 @@ fun StudentDashboardScreen(
                         }
                     }
 
-                    // ── Recent Notices ──
+                    // â”€â”€ Recent Notices â”€â”€
                     item(key = "notice_header") {
                         Text(
                             "Recent Notices",
@@ -252,7 +263,11 @@ fun StudentDashboardScreen(
                         }
                     } else {
                         items(state.recentNotices, key = { it.noticeName }) { notice ->
-                            OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                            OutlinedCard(
+                                onClick = onNavigateToNotices,
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.large
+                            ) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -305,6 +320,7 @@ private fun StudentStatCard(
 
     ElevatedCard(
         modifier = modifier,
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
     ) {
         Column(

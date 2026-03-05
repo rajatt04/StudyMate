@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.user
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.user
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -48,7 +48,7 @@ fun UserDirectoryScreen(
     var text by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
 
-    val uiState by viewModel.directoryState.collectAsState()
+    val uiState by viewModel.directoryState.collectAsStateWithLifecycle()
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(isRefreshing) {
@@ -114,7 +114,7 @@ fun UserDirectoryScreen(
                             items(filteredUsers.take(5)) { user ->
                                 ListItem(
                                     headlineContent = { Text(user.name) },
-                                    supportingContent = { Text("${user.role} • ${user.detail}") },
+                                    supportingContent = { Text("${user.role} â€¢ ${user.detail}") },
                                     leadingContent = { Icon(Icons.Default.Search, null) }
                                 )
                             }
@@ -141,7 +141,7 @@ fun UserDirectoryScreen(
                         items(filteredUsers) { user ->
                             ListItem(
                                 headlineContent = { Text(user.name, fontWeight = FontWeight.SemiBold) },
-                                supportingContent = { Text("${user.role} • ${user.detail}") },
+                                supportingContent = { Text("${user.role} â€¢ ${user.detail}") },
                                 leadingContent = {
                                     Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.size(40.dp)) {
                                         Icon(Icons.Default.Person, null, modifier = Modifier.padding(8.dp), tint = MaterialTheme.colorScheme.onPrimaryContainer)

@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.faculty
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.faculty
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,7 +44,7 @@ fun MarkAttendanceScreen(
     onNavigateBack: () -> Unit,
     viewModel: FacultyViewModel = hiltViewModel()
 ) {
-    val state by viewModel.markAttendanceState.collectAsState()
+    val state by viewModel.markAttendanceState.collectAsStateWithLifecycle()
     var className by remember { mutableStateOf("") }
     var date by remember {
         mutableStateOf(
@@ -80,7 +80,7 @@ fun MarkAttendanceScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "✅ Attendance Saved!",
+                        text = "âœ… Attendance Saved!",
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.primary
                     )

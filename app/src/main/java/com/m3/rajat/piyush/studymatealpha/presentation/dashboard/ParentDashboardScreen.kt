@@ -1,4 +1,4 @@
-package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
+﻿package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -40,7 +40,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -68,7 +68,7 @@ fun ParentDashboardScreen(
     onNavigateToMessages: () -> Unit = {},
     viewModel: ParentViewModel = hiltViewModel()
 ) {
-    val state by viewModel.overviewState.collectAsState()
+    val state by viewModel.overviewState.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
@@ -118,7 +118,7 @@ fun ParentDashboardScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // ── Ward Info Header ──
+                    // â”€â”€ Ward Info Header â”€â”€
                     item(key = "ward_info") {
                         ElevatedCard(
                             modifier = Modifier.fillMaxWidth(),
@@ -158,7 +158,7 @@ fun ParentDashboardScreen(
                         }
                     }
 
-                    // ── Live Stats Row ──
+                    // â”€â”€ Live Stats Row â”€â”€
                     item(key = "stats") {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -181,7 +181,7 @@ fun ParentDashboardScreen(
                         }
                     }
 
-                    // ── Fee & Messages Row ──
+                    // â”€â”€ Fee & Messages Row â”€â”€
                     item(key = "fee_msg") {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -204,7 +204,7 @@ fun ParentDashboardScreen(
                                     )
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Text(
-                                        "₹${state.pendingFees.toInt()}",
+                                        "â‚¹${state.pendingFees.toInt()}",
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = if (state.pendingFees > 0) MaterialTheme.colorScheme.error
@@ -248,7 +248,7 @@ fun ParentDashboardScreen(
                         }
                     }
 
-                    // ── Quick Actions ──
+                    // â”€â”€ Quick Actions â”€â”€
                     item(key = "actions_header") {
                         Text(
                             text = "Quick Actions",
@@ -301,7 +301,8 @@ private fun ParentActionCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .semantics { contentDescription = "$title: $description" }
+            .semantics { contentDescription = "$title: $description" },
+        shape = MaterialTheme.shapes.large
     ) {
         Row(
             modifier = Modifier
@@ -360,6 +361,7 @@ private fun ParentStatCard(
 
     ElevatedCard(
         modifier = modifier,
+        shape = MaterialTheme.shapes.large,
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
     ) {
         Column(

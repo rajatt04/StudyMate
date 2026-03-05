@@ -31,7 +31,7 @@ data class FacultyDashState(
 data class MarkAttendanceState(
     val isLoading: Boolean = true,
     val students: List<StudentEntity> = emptyList(),
-    val attendanceMap: MutableMap<Int, String> = mutableMapOf(), // studentId -> status
+    val attendanceMap: Map<Int, String> = emptyMap(), // studentId -> status
     val selectedDate: String = "",
     val selectedClass: String = "",
     val isSaving: Boolean = false,
@@ -41,7 +41,7 @@ data class MarkAttendanceState(
 data class EnterMarksState(
     val isLoading: Boolean = true,
     val students: List<StudentEntity> = emptyList(),
-    val marksMap: MutableMap<Int, Float> = mutableMapOf(), // studentId -> marks
+    val marksMap: Map<Int, Float> = emptyMap(), // studentId -> marks
     val subject: String = "",
     val examType: String = "",
     val maxMarks: Float = 100f,
@@ -112,7 +112,7 @@ class FacultyViewModel @Inject constructor(
                 _attendanceState.value = MarkAttendanceState(
                     isLoading = false,
                     students = students,
-                    attendanceMap = map,
+                    attendanceMap = map.toMap(),
                     selectedDate = date,
                     selectedClass = className
                 )
@@ -160,7 +160,7 @@ class FacultyViewModel @Inject constructor(
                 _marksState.value = EnterMarksState(
                     isLoading = false,
                     students = students,
-                    marksMap = mutableMapOf()
+                    marksMap = emptyMap()
                 )
             } catch (_: Exception) {
                 _marksState.value = _marksState.value.copy(isLoading = false)

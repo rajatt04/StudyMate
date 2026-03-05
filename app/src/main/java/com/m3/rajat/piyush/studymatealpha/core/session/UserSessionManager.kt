@@ -15,7 +15,7 @@ data class UserSession(
 )
 
 @Singleton
-class UserSessionManager @Inject constructor(
+open class UserSessionManager @Inject constructor(
     private val userPreferences: UserPreferences
 ) {
 
@@ -35,11 +35,11 @@ class UserSessionManager @Inject constructor(
         )
     }
 
-    suspend fun login(userId: Int, role: String, name: String, email: String) {
+    open suspend fun login(userId: Int, role: String, name: String, email: String) {
         userPreferences.saveSession(userId, role, name, email)
     }
 
-    suspend fun logout() {
+    open suspend fun logout() {
         userPreferences.clearSession()
     }
 }

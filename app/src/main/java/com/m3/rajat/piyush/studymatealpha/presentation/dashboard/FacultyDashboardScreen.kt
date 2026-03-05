@@ -1,6 +1,9 @@
 package com.m3.rajat.piyush.studymatealpha.presentation.dashboard
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,37 +15,50 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Assignment
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Campaign
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.m3.rajat.piyush.studymatealpha.presentation.common.ErrorScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.common.LoadingScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.faculty.FacultyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FacultyDashboardScreen(
-    onNavigateToAddAssignment: () -> Unit = {}
+    onNavigateToAddAssignment: () -> Unit = {},
+    viewModel: FacultyViewModel = hiltViewModel()
 ) {
+    val state by viewModel.dashState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
@@ -63,66 +79,137 @@ fun FacultyDashboardScreen(
             }
         }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+        when {
+            state.isLoading -> {
+                LoadingScreen(modifier = Modifier.padding(paddingValues))
+            }
+            state.errorMessage != null -> {
+                ErrorScreen(
+                    modifier = Modifier.padding(paddingValues),
+                    message = state.errorMessage!!,
+                    onRetry = { viewModel.loadDashboard() }
+                )
+            }
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    ActionSummaryCard(
-                        title = "To Grade",
-                        count = 12,
-                        icon = Icons.AutoMirrored.Filled.Assignment,
-                        modifier = Modifier.weight(1f)
-                    )
-                    ActionSummaryCard(
-                        title = "Classes Today",
-                        count = 4,
-                        icon = Icons.Default.Schedule,
-                        modifier = Modifier.weight(1f)
-                    )
+                    // ── Live Stats from DB ──
+                    item(key = "stats") {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            FacultyStatCard(
+                                title = "Students",
+                                count = state.studentCount,
+                                icon = Icons.Default.People,
+                                modifier = Modifier.weight(1f)
+                            )
+                            FacultyStatCard(
+                                title = "Assignments",
+                                count = state.assignmentCount,
+                                icon = Icons.AutoMirrored.Filled.Assignment,
+                                modifier = Modifier.weight(1f)
+                            )
+                            FacultyStatCard(
+                                title = "Notices",
+                                count = state.noticeCount,
+                                icon = Icons.Default.Campaign,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+
+                    // ── Quick Actions ──
+                    item(key = "actions_header") {
+                        Text(
+                            "Quick Actions",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+
+                    item(key = "action_add_assign") {
+                        FacultyActionCard(
+                            title = "Add Assignment",
+                            description = "Create a new assignment for students",
+                            icon = Icons.AutoMirrored.Filled.Assignment,
+                            onClick = onNavigateToAddAssignment
+                        )
+                    }
+
+                    // ── Summary ──
+                    item(key = "summary_header") {
+                        Text(
+                            "Overview",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+
+                    item(key = "summary") {
+                        ElevatedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                SummaryRow("Total Students Enrolled", state.studentCount.toString())
+                                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                                SummaryRow("Assignments Created", state.assignmentCount.toString())
+                                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                                SummaryRow("Notices Posted", state.noticeCount.toString())
+                            }
+                        }
+                    }
                 }
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Today's Schedule",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-            }
-
-            items(4) { index ->
-                TimetableListItem(
-                    subject = "Data Structures - Sec A",
-                    time = "${10 + index}:00 AM - ${11 + index}:00 AM",
-                    isCompleted = index < 1
-                )
-                if (index < 3) HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             }
         }
     }
 }
 
+@Composable
+private fun SummaryRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+            value,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ActionSummaryCard(
+private fun FacultyStatCard(
     title: String,
     count: Int,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(modifier = modifier) {
+    ElevatedCard(
+        modifier = modifier,
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+    ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             BadgedBox(
                 badge = {
@@ -131,46 +218,80 @@ private fun ActionSummaryCard(
                     }
                 }
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(32.dp)
-                )
+                Surface(
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(24.dp)
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TimetableListItem(
-    subject: String,
-    time: String,
-    isCompleted: Boolean
+private fun FacultyActionCard(
+    title: String,
+    description: String,
+    icon: ImageVector,
+    onClick: () -> Unit
 ) {
-    ListItem(
-        headlineContent = { Text(subject, fontWeight = FontWeight.SemiBold) },
-        supportingContent = { Text(time) },
-        leadingContent = {
-            if (isCompleted) {
+    ElevatedCard(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 1.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Surface(
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.secondaryContainer,
+                modifier = Modifier.size(48.dp)
+            ) {
                 Icon(
-                    Icons.Default.CheckCircle,
-                    contentDescription = "Completed",
-                    tint = MaterialTheme.colorScheme.primary
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .size(24.dp)
                 )
-            } else {
-                Icon(
-                    Icons.Default.Schedule,
-                    contentDescription = "Pending",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+            }
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .weight(1f)
+            ) {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
-    )
+    }
 }

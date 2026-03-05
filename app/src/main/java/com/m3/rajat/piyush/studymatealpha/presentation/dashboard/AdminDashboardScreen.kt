@@ -47,6 +47,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.m3.rajat.piyush.studymatealpha.presentation.admin.AdminViewModel
 import com.m3.rajat.piyush.studymatealpha.presentation.common.ErrorScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.common.LoadingScreen
 
@@ -58,10 +59,10 @@ fun AdminDashboardScreen(
     onNavigateToAddParent: () -> Unit = {},
     onNavigateToNotices: () -> Unit = {},
     onNavigateToLibrary: () -> Unit = {},
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: AdminViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.state.collectAsState()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -80,7 +81,7 @@ fun AdminDashboardScreen(
                 ErrorScreen(
                     modifier = Modifier.padding(paddingValues),
                     message = uiState.errorMessage!!,
-                    onRetry = { viewModel.loadDashboardData() }
+                    onRetry = { viewModel.loadDashboard() }
                 )
             }
             else -> {
@@ -118,11 +119,74 @@ fun AdminDashboardScreen(
                             trendStr = "Live from database"
                         )
                     }
+                    item {
+                        MetricCard(
+                            title = "Total Parents",
+                            value = uiState.parentCount.toString(),
+                            icon = Icons.Default.FamilyRestroom,
+                            trendStr = "Live from database"
+                        )
+                    }
+                    item {
+                        MetricCard(
+                            title = "Notices Posted",
+                            value = uiState.noticeCount.toString(),
+                            icon = Icons.Default.Campaign,
+                            trendStr = "Active notices"
+                        )
+                    }
+
+                    // Fee Summary Card
                     item(span = { GridItemSpan(2) }) {
                         StaffAttendanceCard(
-                            presentCount = uiState.facultyCount,
-                            totalCount = if (uiState.facultyCount > 0) uiState.facultyCount else 1
+                            presentCount = uiState.assignmentCount,
+                            totalCount = uiState.studentCount.coerceAtLeast(1)
                         )
+                    }
+
+                    // Financial Overview
+                    item(span = { GridItemSpan(2) }) {
+                        OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    "Financial Summary",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold,
+                                    modifier = Modifier.padding(bottom = 12.dp)
+                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Column {
+                                        Text(
+                                            "₹${uiState.totalFeesCollected.toInt()}",
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.primary
+                                        )
+                                        Text("Collected", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    }
+                                    Column(horizontalAlignment = Alignment.End) {
+                                        Text(
+                                            "₹${uiState.totalFeesPending.toInt()}",
+                                            style = MaterialTheme.typography.headlineSmall,
+                                            fontWeight = FontWeight.Bold,
+                                            color = if (uiState.totalFeesPending > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+                                        )
+                                        Text("Pending", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    }
+                                }
+                                if (uiState.overdueCount > 0) {
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text(
+                                        "⚠️ ${uiState.overdueCount} overdue payment(s)",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                }
+                            }
+                        }
                     }
 
                     item(span = { GridItemSpan(2) }) {

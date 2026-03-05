@@ -1,4 +1,4 @@
-@file:Suppress("DEPRECATION")
+
 
 package com.m3.rajat.piyush.studymatealpha.di
 
@@ -26,7 +26,6 @@ object DatabaseModule {
             "studymate.db"
         )
         .addMigrations(AppDatabase.MIGRATION_1_2)
-        .fallbackToDestructiveMigration()
         .build()
     }
 

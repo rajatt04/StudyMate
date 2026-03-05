@@ -12,7 +12,7 @@ import javax.inject.Inject
  * Use case that handles authentication for all user roles.
  * Validates input, verifies credentials against the database using password hashing.
  */
-class LoginUseCase @Inject constructor(
+open class LoginUseCase @Inject constructor(
     private val adminRepository: AdminRepository,
     private val studentRepository: StudentRepository,
     private val facultyRepository: FacultyRepository,
@@ -27,7 +27,7 @@ class LoginUseCase @Inject constructor(
         val role: String = ""
     )
 
-    suspend operator fun invoke(
+    open suspend operator fun invoke(
         email: String,
         password: String,
         role: String

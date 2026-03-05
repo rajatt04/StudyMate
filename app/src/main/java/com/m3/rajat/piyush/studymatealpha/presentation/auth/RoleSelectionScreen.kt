@@ -133,7 +133,7 @@ fun RoleSelectionScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             // ─── Header ──────────────────────────────────────────────
             Text(

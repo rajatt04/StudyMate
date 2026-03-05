@@ -35,8 +35,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -121,8 +125,20 @@ fun StudyMateApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    // Track current user role to resolve shared routes (Settings, Notices, Grades)
+    var currentUserRole by rememberSaveable { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(currentRoute) {
+        when (currentRoute) {
+            Screen.AdminDashboard.route -> currentUserRole = "ADMIN"
+            Screen.StudentDashboard.route -> currentUserRole = "STUDENT"
+            Screen.FacultyDashboard.route -> currentUserRole = "FACULTY"
+            Screen.ParentDashboard.route -> currentUserRole = "PARENT"
+        }
+    }
+
     val isCompact = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
-    val activeBottomNav = getActiveBottomNav(currentRoute)
+    val activeBottomNav = getActiveBottomNav(currentRoute, currentUserRole)
     val showBottomBar = isCompact && activeBottomNav != null
     val showNavRail = !isCompact && activeBottomNav != null
 
@@ -131,7 +147,7 @@ fun StudyMateApp(
             if (showBottomBar) {
                 StudyMateBottomBar(
                     destinations = activeBottomNav!!,
-                    onNavigateToDestination = { route -> navigateToTopLevelDestination(navController, route) },
+                    onNavigateToDestination = { route -> navigateToTopLevelDestination(navController, currentUserRole, route) },
                     currentRoute = currentRoute
                 )
             }
@@ -146,7 +162,7 @@ fun StudyMateApp(
             if (showNavRail) {
                 StudyMateNavRail(
                     destinations = activeBottomNav!!,
-                    onNavigateToDestination = { route -> navigateToTopLevelDestination(navController, route) },
+                    onNavigateToDestination = { route -> navigateToTopLevelDestination(navController, currentUserRole, route) },
                     currentRoute = currentRoute
                 )
             }
@@ -404,20 +420,34 @@ fun StudyMateNavHost(
     }
 }
 
-private fun getActiveBottomNav(currentRoute: String?): List<BottomNavItem>? {
+private fun getActiveBottomNav(currentRoute: String?, userRole: String?): List<BottomNavItem>? {
     if (currentRoute == null) return null
-    return when {
-        adminBottomNav.any { it.route == currentRoute } -> adminBottomNav
-        studentBottomNav.any { it.route == currentRoute } -> studentBottomNav
-        facultyBottomNav.any { it.route == currentRoute } -> facultyBottomNav
-        parentBottomNav.any { it.route == currentRoute } -> parentBottomNav
+    // Use user role to resolve which bottom nav to show,
+    // avoiding ambiguity for shared routes (settings, notices, grades)
+    val roleNav = when (userRole) {
+        "ADMIN" -> adminBottomNav
+        "STUDENT" -> studentBottomNav
+        "FACULTY" -> facultyBottomNav
+        "PARENT" -> parentBottomNav
         else -> null
+    }
+    return if (roleNav?.any { it.route == currentRoute } == true) roleNav else null
+}
+
+private fun getDashboardRoute(userRole: String?): String {
+    return when (userRole) {
+        "ADMIN" -> Screen.AdminDashboard.route
+        "STUDENT" -> Screen.StudentDashboard.route
+        "FACULTY" -> Screen.FacultyDashboard.route
+        "PARENT" -> Screen.ParentDashboard.route
+        else -> Screen.StudentDashboard.route
     }
 }
 
-private fun navigateToTopLevelDestination(navController: NavHostController, route: String) {
+private fun navigateToTopLevelDestination(navController: NavHostController, userRole: String?, route: String) {
+    val dashboardRoute = getDashboardRoute(userRole)
     navController.navigate(route) {
-        popUpTo(navController.graph.startDestinationId) { saveState = true }
+        popUpTo(dashboardRoute) { saveState = true }
         launchSingleTop = true
         restoreState = true
     }

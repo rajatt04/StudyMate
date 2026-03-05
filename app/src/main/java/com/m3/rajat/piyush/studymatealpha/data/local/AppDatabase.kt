@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.m3.rajat.piyush.studymatealpha.data.local
 
 import androidx.room.Database

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +28,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
@@ -44,8 +48,18 @@ fun FeeStatusScreen(
     viewModel: StudentViewModel = hiltViewModel()
 ) {
     val feeState by viewModel.feeState.collectAsState()
+    var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { viewModel.loadFees() }
+    LaunchedEffect(isRefreshing) {
+        if (isRefreshing) {
+            kotlinx.coroutines.delay(1000L)
+            while (viewModel.feeState.value.isLoading) {
+                kotlinx.coroutines.delay(15L)
+            }
+            isRefreshing = false
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -59,18 +73,26 @@ fun FeeStatusScreen(
             )
         }
     ) { paddingValues ->
-        when {
-            feeState.isLoading -> LoadingScreen(modifier = Modifier.padding(paddingValues))
-            feeState.fees.isEmpty() -> EmptyStateScreen(
-                modifier = Modifier.padding(paddingValues),
-                title = "No Fee Records",
-                subtitle = "No fee entries have been added yet"
-            )
-            else -> {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                viewModel.loadFees()
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            when {
+                feeState.isLoading && !isRefreshing -> LoadingScreen()
+                feeState.fees.isEmpty() -> EmptyStateScreen(
+                    title = "No Fee Records",
+                    subtitle = "No fee entries have been added yet"
+                )
+                else -> {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
+                        .fillMaxSize(),
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -140,6 +162,7 @@ fun FeeStatusScreen(
                     }
                 }
             }
+        }
         }
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -39,8 +40,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -60,6 +65,17 @@ fun FacultyDashboardScreen(
 ) {
     val state by viewModel.dashState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    var isRefreshing by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(isRefreshing) {
+        if (isRefreshing) {
+            kotlinx.coroutines.delay(1000L)
+            while (viewModel.dashState.value.isLoading) {
+                kotlinx.coroutines.delay(15L)
+            }
+            isRefreshing = false
+        }
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -79,22 +95,30 @@ fun FacultyDashboardScreen(
             }
         }
     ) { paddingValues ->
-        when {
-            state.isLoading -> {
-                LoadingScreen(modifier = Modifier.padding(paddingValues))
-            }
-            state.errorMessage != null -> {
-                ErrorScreen(
-                    modifier = Modifier.padding(paddingValues),
-                    message = state.errorMessage!!,
-                    onRetry = { viewModel.loadDashboard() }
-                )
-            }
-            else -> {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                viewModel.loadDashboard()
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            when {
+                state.isLoading && !isRefreshing -> {
+                    LoadingScreen()
+                }
+                state.errorMessage != null -> {
+                    ErrorScreen(
+                        message = state.errorMessage!!,
+                        onRetry = { viewModel.loadDashboard() }
+                    )
+                }
+                else -> {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
+                        .fillMaxSize(),
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
@@ -170,6 +194,7 @@ fun FacultyDashboardScreen(
                     }
                 }
             }
+        }
         }
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -24,6 +25,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +49,17 @@ fun UserDirectoryScreen(
     var active by rememberSaveable { mutableStateOf(false) }
 
     val uiState by viewModel.directoryState.collectAsState()
+    var isRefreshing by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(isRefreshing) {
+        if (isRefreshing) {
+            kotlinx.coroutines.delay(1000L)
+            while (viewModel.directoryState.value.isLoading) {
+                kotlinx.coroutines.delay(15L)
+            }
+            isRefreshing = false
+        }
+    }
 
     // Map to unified list
     val allUsers = uiState.students.map {
@@ -60,9 +73,17 @@ fun UserDirectoryScreen(
         it.name.contains(text, ignoreCase = true) || it.detail.contains(text, ignoreCase = true)
     }
 
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            viewModel.loadUsers()
+        },
+        modifier = Modifier.fillMaxSize()
+    ) {
     Column(modifier = Modifier.fillMaxSize()) {
         when {
-            uiState.isLoading -> {
+            uiState.isLoading && !isRefreshing -> {
                 LoadingScreen()
             }
             else -> {
@@ -135,5 +156,6 @@ fun UserDirectoryScreen(
                 }
             }
         }
+    }
     }
 }

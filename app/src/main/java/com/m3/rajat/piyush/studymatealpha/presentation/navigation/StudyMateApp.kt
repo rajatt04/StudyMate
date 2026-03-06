@@ -218,17 +218,16 @@ private fun StudyMateBottomBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.9f) // Compact width
-                .shadow(elevation = 24.dp, shape = RoundedCornerShape(100), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
                 .background(
                     // Semi-transparent glassmorphic look
-                    color = extendedColors.surfaceContainerLow.copy(alpha = 0.85f),
-                    shape = RoundedCornerShape(100)
+                    color = extendedColors.surfaceContainerLow.copy(alpha = 0.95f),
+                    shape = CircleShape
                 )
                 // Add a subtle border for extra premium feel
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                    shape = RoundedCornerShape(100)
+                    shape = CircleShape
                 )
                 .padding(horizontal = 12.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,

@@ -58,9 +58,11 @@ import com.m3.rajat.piyush.studymatealpha.presentation.academics.GradesScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.academics.TimetableScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.assignment.AddAssignmentScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.LoginScreen
+import com.m3.rajat.piyush.studymatealpha.presentation.auth.OnboardingScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.RegisterScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.RoleSelectionScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.SplashScreen
+import com.m3.rajat.piyush.studymatealpha.core.datastore.UserPreferences
 import com.m3.rajat.piyush.studymatealpha.presentation.chat.ChatScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.common.EmptyStateScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.dashboard.AdminDashboardScreen
@@ -88,6 +90,10 @@ import com.m3.rajat.piyush.studymatealpha.presentation.faculty.ClassPerformanceS
 import com.m3.rajat.piyush.studymatealpha.presentation.parent.TrackWardScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.parent.ParentAttendanceScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.parent.ParentFeesScreen
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 /**
  * Top-level navigation items for role-specific bottom nav
@@ -283,8 +289,17 @@ fun StudyMateNavHost(
         composable(Screen.Splash.route) {
             SplashScreen(
                 onNavigateNext = {
-                    navController.navigate(Screen.RoleSelection.route) {
+                    navController.navigate(Screen.Onboarding.route) {
                         popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(Screen.Onboarding.route) {
+            OnboardingScreen(
+                onFinished = {
+                    navController.navigate(Screen.RoleSelection.route) {
+                        popUpTo(Screen.Onboarding.route) { inclusive = true }
                     }
                 }
             )
@@ -315,7 +330,10 @@ fun StudyMateNavHost(
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToRegister = if (role == "ADMIN") {
                     { navController.navigate(Screen.Register.route) }
-                } else null
+                } else null,
+                onNavigateToForgotPassword = {
+                    navController.navigate(Screen.ForgotPassword.route)
+                }
             )
         }
         composable(Screen.Register.route) {
@@ -456,13 +474,23 @@ fun StudyMateNavHost(
         composable(Screen.Profile.route) {
             SettingsScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToComponents = { navController.navigate(Screen.ComponentShowcase.route) }
+                onNavigateToComponents = { navController.navigate(Screen.ComponentShowcase.route) },
+                onLogout = {
+                    navController.navigate(Screen.RoleSelection.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
         composable(Screen.Settings.route) {
             SettingsScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onNavigateToComponents = { navController.navigate(Screen.ComponentShowcase.route) }
+                onNavigateToComponents = { navController.navigate(Screen.ComponentShowcase.route) },
+                onLogout = {
+                    navController.navigate(Screen.RoleSelection.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
         composable(Screen.ComponentShowcase.route) {
@@ -472,17 +500,22 @@ fun StudyMateNavHost(
 }
 
 private fun getActiveBottomNav(currentRoute: String?, userRole: String?): List<BottomNavItem>? {
-    if (currentRoute == null) return null
-    // Use user role to resolve which bottom nav to show,
-    // avoiding ambiguity for shared routes (settings, notices, grades)
-    val roleNav = when (userRole) {
+    if (currentRoute == null || userRole == null) return null
+    // Auth and pre-auth routes should never show bottom nav
+    val noNavRoutes = setOf(
+        Screen.Splash.route, Screen.Onboarding.route, Screen.RoleSelection.route,
+        Screen.Login.route, Screen.Register.route,
+        Screen.ForgotPassword.route, Screen.ComponentShowcase.route
+    )
+    if (currentRoute in noNavRoutes || currentRoute.startsWith(Screen.Login.route)) return null
+    // Return the nav bar for the current user's role
+    return when (userRole) {
         "ADMIN" -> adminBottomNav
         "STUDENT" -> studentBottomNav
         "FACULTY" -> facultyBottomNav
         "PARENT" -> parentBottomNav
         else -> null
     }
-    return if (roleNav?.any { it.route == currentRoute } == true) roleNav else null
 }
 
 private fun getDashboardRoute(userRole: String?): String {

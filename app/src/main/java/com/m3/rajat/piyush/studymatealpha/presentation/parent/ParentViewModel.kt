@@ -125,6 +125,7 @@ class ParentViewModel @Inject constructor(
 
     fun loadAttendance() {
         viewModelScope.launch {
+            if (wardId <= 0) return@launch
             _attendanceState.value = _attendanceState.value.copy(isLoading = true)
             try {
                 val records = attendanceRepository.getByStudent(wardId)
@@ -134,14 +135,16 @@ class ParentViewModel @Inject constructor(
                     records = records,
                     percentage = pct
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _attendanceState.value = _attendanceState.value.copy(isLoading = false)
+                _overviewState.value = _overviewState.value.copy(errorMessage = "Attendance: ${e.message}")
             }
         }
     }
 
     fun loadMarks() {
         viewModelScope.launch {
+            if (wardId <= 0) return@launch
             _marksState.value = _marksState.value.copy(isLoading = true)
             try {
                 val marks = marksRepository.getByStudent(wardId)
@@ -153,14 +156,16 @@ class ParentViewModel @Inject constructor(
                     subjects = subjects,
                     average = avg
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _marksState.value = _marksState.value.copy(isLoading = false)
+                _overviewState.value = _overviewState.value.copy(errorMessage = "Marks: ${e.message}")
             }
         }
     }
 
     fun loadFees() {
         viewModelScope.launch {
+            if (wardId <= 0) return@launch
             _feeState.value = _feeState.value.copy(isLoading = true)
             try {
                 val fees = feeRepository.getByStudent(wardId)
@@ -170,8 +175,9 @@ class ParentViewModel @Inject constructor(
                     totalPending = fees.filter { it.status != "PAID" }.sumOf { it.amount },
                     totalPaid = fees.filter { it.status == "PAID" }.sumOf { it.amount }
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _feeState.value = _feeState.value.copy(isLoading = false)
+                _overviewState.value = _overviewState.value.copy(errorMessage = "Fees: ${e.message}")
             }
         }
     }
@@ -187,8 +193,9 @@ class ParentViewModel @Inject constructor(
                     messages = msgs,
                     unreadCount = unread
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _messageState.value = _messageState.value.copy(isLoading = false)
+                _overviewState.value = _overviewState.value.copy(errorMessage = "Messages: ${e.message}")
             }
         }
     }
@@ -207,7 +214,9 @@ class ParentViewModel @Inject constructor(
                     )
                 )
                 loadMessages()
-            } catch (_: Exception) { /* swallow */ }
+            } catch (e: Exception) {
+                _overviewState.value = _overviewState.value.copy(errorMessage = "Send failed: ${e.message}")
+            }
         }
     }
 }

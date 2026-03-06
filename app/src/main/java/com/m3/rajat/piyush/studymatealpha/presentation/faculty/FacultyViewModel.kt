@@ -116,8 +116,9 @@ class FacultyViewModel @Inject constructor(
                     selectedDate = date,
                     selectedClass = className
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _attendanceState.value = _attendanceState.value.copy(isLoading = false)
+                _dashState.value = _dashState.value.copy(errorMessage = "Load students: ${e.message}")
             }
         }
     }
@@ -146,8 +147,9 @@ class FacultyViewModel @Inject constructor(
                     isSaving = false,
                     saveSuccess = true
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _attendanceState.value = _attendanceState.value.copy(isSaving = false)
+                _dashState.value = _dashState.value.copy(errorMessage = "Save attendance: ${e.message}")
             }
         }
     }
@@ -162,8 +164,9 @@ class FacultyViewModel @Inject constructor(
                     students = students,
                     marksMap = emptyMap()
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _marksState.value = _marksState.value.copy(isLoading = false)
+                _dashState.value = _dashState.value.copy(errorMessage = "Load students for marks: ${e.message}")
             }
         }
     }
@@ -204,8 +207,9 @@ class FacultyViewModel @Inject constructor(
                     isSaving = false,
                     saveSuccess = true
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _marksState.value = _marksState.value.copy(isSaving = false)
+                _dashState.value = _dashState.value.copy(errorMessage = "Save marks: ${e.message}")
             }
         }
     }

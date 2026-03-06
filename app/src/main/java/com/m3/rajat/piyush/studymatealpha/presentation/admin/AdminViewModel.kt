@@ -2,6 +2,7 @@ package com.m3.rajat.piyush.studymatealpha.presentation.admin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.m3.rajat.piyush.studymatealpha.data.local.entity.StudentEntity
 import com.m3.rajat.piyush.studymatealpha.domain.repository.AdminRepository
 import com.m3.rajat.piyush.studymatealpha.domain.repository.AssignmentRepository
 import com.m3.rajat.piyush.studymatealpha.domain.repository.FacultyRepository
@@ -69,4 +70,19 @@ class AdminViewModel @Inject constructor(
             }
         }
     }
+
+    suspend fun loadAllStudents(): List<StudentEntity> {
+        return studentRepository.getAll()
+    }
+
+    suspend fun loadFeeTracking(): FeeTrackingState {
+        return FeeTrackingState(
+            isLoading = false,
+            fees = feeRepository.getAll(),
+            totalCollected = feeRepository.getTotalCollected(),
+            totalPending = feeRepository.getTotalPending(),
+            overdueCount = feeRepository.getOverdueCount()
+        )
+    }
 }
+

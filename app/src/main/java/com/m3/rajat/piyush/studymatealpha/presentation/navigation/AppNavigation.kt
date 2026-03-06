@@ -7,6 +7,7 @@ package com.m3.rajat.piyush.studymatealpha.presentation.navigation
 sealed class Screen(val route: String) {
     // Auth
     object Splash : Screen("splash")
+    object Onboarding : Screen("onboarding")
     object RoleSelection : Screen("role_selection")
     object Login : Screen("login")
     object Register : Screen("register")

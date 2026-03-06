@@ -143,8 +143,9 @@ class StudentViewModel @Inject constructor(
                     totalCount = records.size,
                     presentCount = records.count { it.status == "PRESENT" }
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _attendanceState.value = _attendanceState.value.copy(isLoading = false)
+                _dashboardState.value = _dashboardState.value.copy(errorMessage = "Attendance: ${e.message}")
             }
         }
     }
@@ -167,8 +168,9 @@ class StudentViewModel @Inject constructor(
                     averagePercentage = avg,
                     selectedSubject = subject
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _marksState.value = _marksState.value.copy(isLoading = false)
+                _dashboardState.value = _dashboardState.value.copy(errorMessage = "Marks: ${e.message}")
             }
         }
     }
@@ -189,8 +191,9 @@ class StudentViewModel @Inject constructor(
                     timetableEntries = entries.filter { it.dayOfWeek == dayOfWeek },
                     selectedDay = dayOfWeek
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _timetableState.value = _timetableState.value.copy(isLoading = false)
+                _dashboardState.value = _dashboardState.value.copy(errorMessage = "Timetable: ${e.message}")
             }
         }
     }
@@ -206,8 +209,9 @@ class StudentViewModel @Inject constructor(
                     totalPending = fees.filter { it.status != "PAID" }.sumOf { it.amount },
                     totalPaid = fees.filter { it.status == "PAID" }.sumOf { it.amount }
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _feeState.value = _feeState.value.copy(isLoading = false)
+                _dashboardState.value = _dashboardState.value.copy(errorMessage = "Fees: ${e.message}")
             }
         }
     }

@@ -28,6 +28,7 @@ class UserPreferences @Inject constructor(
         val LOGGED_IN_USER_EMAIL = stringPreferencesKey("logged_in_user_email")
         val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
         val DARK_MODE = booleanPreferencesKey("dark_mode")
+        val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
     }
 
     // Selected Role
@@ -112,6 +113,17 @@ class UserPreferences @Inject constructor(
     suspend fun setDarkMode(enabled: Boolean) {
         context.dataStore.edit { prefs ->
             prefs[PreferenceKeys.DARK_MODE] = enabled
+        }
+    }
+
+    // Onboarding
+    val onboardingCompleted: Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[PreferenceKeys.ONBOARDING_COMPLETED] ?: false
+    }
+
+    suspend fun setOnboardingCompleted() {
+        context.dataStore.edit { prefs ->
+            prefs[PreferenceKeys.ONBOARDING_COMPLETED] = true
         }
     }
 }

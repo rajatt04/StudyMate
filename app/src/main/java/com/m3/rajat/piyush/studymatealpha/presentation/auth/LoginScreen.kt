@@ -90,6 +90,7 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onNavigateBack: () -> Unit,
     onNavigateToRegister: (() -> Unit)? = null,
+    onNavigateToForgotPassword: () -> Unit = {},
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     var email by rememberSaveable { mutableStateOf("") }
@@ -431,7 +432,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextButton(onClick = { /* Forgot password */ }) {
+                TextButton(onClick = onNavigateToForgotPassword) {
                     Text(
                         text = stringResource(R.string.forgot_password),
                         color = MaterialTheme.colorScheme.onSurfaceVariant

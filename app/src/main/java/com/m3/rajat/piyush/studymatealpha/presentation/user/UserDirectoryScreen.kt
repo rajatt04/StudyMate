@@ -1,5 +1,6 @@
 ﻿package com.m3.rajat.piyush.studymatealpha.presentation.user
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -90,8 +91,11 @@ fun UserDirectoryScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp , end = 16.dp)
                 ) {
+                    val searchPadding by animateDpAsState(
+                        targetValue = if (active) 0.dp else 16.dp,
+                        label = "searchPadding"
+                    )
                     SearchBar(
                         query = text,
                         onQueryChange = { text = it },
@@ -107,7 +111,9 @@ fun UserDirectoryScreen(
                                 }
                             }
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = searchPadding)
                     ) {
                         // Suggestions while active
                         LazyColumn(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(16.dp)) {

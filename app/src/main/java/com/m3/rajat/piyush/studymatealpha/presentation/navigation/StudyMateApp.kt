@@ -6,10 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -61,7 +65,6 @@ import com.m3.rajat.piyush.studymatealpha.presentation.auth.LoginScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.OnboardingScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.RegisterScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.auth.RoleSelectionScreen
-import com.m3.rajat.piyush.studymatealpha.presentation.auth.SplashScreen
 import com.m3.rajat.piyush.studymatealpha.core.datastore.UserPreferences
 import com.m3.rajat.piyush.studymatealpha.presentation.chat.ChatScreen
 import com.m3.rajat.piyush.studymatealpha.presentation.common.EmptyStateScreen
@@ -167,12 +170,14 @@ fun StudyMateApp(
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(bottom = paddingValues.calculateBottomPadding())
+                .consumeWindowInsets(PaddingValues(bottom = paddingValues.calculateBottomPadding()))
         ) {
             if (showNavRail) {
                 StudyMateNavRail(
@@ -198,6 +203,7 @@ private fun StudyMateBottomBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .navigationBarsPadding()
             .padding(horizontal = 24.dp, vertical = 20.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
@@ -274,7 +280,7 @@ private fun StudyMateNavRail(
 fun StudyMateNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = Screen.Splash.route
+    startDestination: String = Screen.Onboarding.route
 ) {
     NavHost(
         navController = navController,
@@ -286,15 +292,6 @@ fun StudyMateNavHost(
         popExitTransition = { StudyMateMotion.screenPopExit }
     ) {
         // ==================== AUTH ====================
-        composable(Screen.Splash.route) {
-            SplashScreen(
-                onNavigateNext = {
-                    navController.navigate(Screen.Onboarding.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
-                    }
-                }
-            )
-        }
         composable(Screen.Onboarding.route) {
             OnboardingScreen(
                 onFinished = {
@@ -503,7 +500,7 @@ private fun getActiveBottomNav(currentRoute: String?, userRole: String?): List<B
     if (currentRoute == null || userRole == null) return null
     // Auth and pre-auth routes should never show bottom nav
     val noNavRoutes = setOf(
-        Screen.Splash.route, Screen.Onboarding.route, Screen.RoleSelection.route,
+        Screen.Onboarding.route, Screen.RoleSelection.route,
         Screen.Login.route, Screen.Register.route,
         Screen.ForgotPassword.route, Screen.ComponentShowcase.route
     )

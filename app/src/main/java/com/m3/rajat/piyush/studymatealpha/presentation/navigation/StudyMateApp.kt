@@ -2,8 +2,10 @@ package com.m3.rajat.piyush.studymatealpha.presentation.navigation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.ui.draw.scale
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -161,34 +163,37 @@ fun StudyMateApp(
     val showNavRail = !isCompact && activeBottomNav != null
 
     Scaffold(
-        bottomBar = {
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = WindowInsets(0.dp)
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                if (showNavRail) {
+                    StudyMateNavRail(
+                        destinations = activeBottomNav!!,
+                        onNavigateToDestination = { route -> navigateToTopLevelDestination(navController, currentUserRole, route) },
+                        currentRoute = currentRoute
+                    )
+                }
+
+                Box(modifier = Modifier.weight(1f)) {
+                    StudyMateNavHost(navController = navController)
+                }
+            }
+            
             if (showBottomBar) {
                 StudyMateBottomBar(
                     destinations = activeBottomNav!!,
                     onNavigateToDestination = { route -> navigateToTopLevelDestination(navController, currentUserRole, route) },
-                    currentRoute = currentRoute
+                    currentRoute = currentRoute,
+                    modifier = Modifier.align(Alignment.BottomCenter)
                 )
-            }
-        },
-        containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = WindowInsets(0.dp)
-    ) { paddingValues ->
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = paddingValues.calculateBottomPadding())
-                .consumeWindowInsets(PaddingValues(bottom = paddingValues.calculateBottomPadding()))
-        ) {
-            if (showNavRail) {
-                StudyMateNavRail(
-                    destinations = activeBottomNav!!,
-                    onNavigateToDestination = { route -> navigateToTopLevelDestination(navController, currentUserRole, route) },
-                    currentRoute = currentRoute
-                )
-            }
-
-            Box(modifier = Modifier.weight(1f)) {
-                StudyMateNavHost(navController = navController)
             }
         }
     }
@@ -198,24 +203,35 @@ fun StudyMateApp(
 private fun StudyMateBottomBar(
     destinations: List<BottomNavItem>,
     onNavigateToDestination: (String) -> Unit,
-    currentRoute: String?
+    currentRoute: String?,
+    modifier: Modifier = Modifier
 ) {
+    val extendedColors = com.m3.rajat.piyush.studymatealpha.ui.theme.LocalExtendedColors.current
+    
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(horizontal = 24.dp, vertical = 20.dp),
+            .padding(horizontal = 32.dp, vertical = 24.dp), // More compact padding
         contentAlignment = Alignment.BottomCenter
     ) {
         Row(
             modifier = Modifier
-                .shadow(elevation = 16.dp, shape = RoundedCornerShape(32.dp), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+                .fillMaxWidth(0.9f) // Compact width
+                .shadow(elevation = 24.dp, shape = RoundedCornerShape(100), spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
                 .background(
-                    color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(32.dp)
+                    // Semi-transparent glassmorphic look
+                    color = extendedColors.surfaceContainerLow.copy(alpha = 0.85f),
+                    shape = RoundedCornerShape(100)
                 )
-                .padding(horizontal = 8.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
+                // Add a subtle border for extra premium feel
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    shape = RoundedCornerShape(100)
+                )
+                .padding(horizontal = 12.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             destinations.forEach { destination ->
@@ -233,24 +249,31 @@ private fun StudyMateBottomBar(
                     label = "indicatorColor"
                 )
 
+                // Smooth scaling for selection
+                val scale by androidx.compose.animation.core.animateFloatAsState(
+                    targetValue = if (selected) 1.1f else 1f,
+                    animationSpec = androidx.compose.animation.core.spring(dampingRatio = androidx.compose.animation.core.Spring.DampingRatioMediumBouncy),
+                    label = "scale"
+                )
+
                 Box(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp)
+                        .size(48.dp) // Fixed circular size
                         .clip(CircleShape)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                             onClick = { onNavigateToDestination(destination.route) }
                         )
-                        .background(indicatorColor),
+                        .background(indicatorColor)
+                        .scale(scale),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = destination.icon,
                         contentDescription = destination.label,
                         tint = iconColor,
-                        modifier = Modifier.size(26.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }

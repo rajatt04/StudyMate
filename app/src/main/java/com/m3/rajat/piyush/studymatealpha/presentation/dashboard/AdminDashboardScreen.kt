@@ -41,7 +41,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -85,7 +85,7 @@ fun AdminDashboardScreen(
     onNavigateToLibrary: () -> Unit = {},
     viewModel: AdminViewModel = hiltViewModel()
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     var isRefreshing by rememberSaveable { mutableStateOf(false) }
     val extendedColors = com.m3.rajat.piyush.studymatealpha.ui.theme.LocalExtendedColors.current
@@ -104,15 +104,15 @@ fun AdminDashboardScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = extendedColors.surfaceContainerLowest,
         topBar = {
-            LargeTopAppBar(
+            TopAppBar(
                 title = { 
                     Text(
                         "Overview",
-                        style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold)
                     ) 
                 },
                 scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.largeTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,
                     scrolledContainerColor = extendedColors.surfaceContainerLow.copy(alpha = 0.9f)
                 )

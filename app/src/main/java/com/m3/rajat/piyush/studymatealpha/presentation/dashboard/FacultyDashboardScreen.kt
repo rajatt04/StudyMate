@@ -95,7 +95,8 @@ fun FacultyDashboardScreen(
             FloatingActionButton(
                 onClick = onNavigateToAddAssignment,
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.padding(bottom = 90.dp)
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Assignment")
             }
@@ -123,9 +124,8 @@ fun FacultyDashboardScreen(
                 }
                 else -> {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 100.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     // â”€â”€ Live Stats from DB â”€â”€

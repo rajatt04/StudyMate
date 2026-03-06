@@ -112,7 +112,10 @@ fun NoticesFeedScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { showAddDialog = true }) {
+            FloatingActionButton(
+                onClick = { showAddDialog = true },
+                modifier = Modifier.padding(bottom = 90.dp)
+            ) {
                 Icon(Icons.Default.Add, "Add Notice")
             }
         }
@@ -140,7 +143,7 @@ fun NoticesFeedScreen(
                 else -> {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
+                    contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 100.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(uiState.notices) { notice ->

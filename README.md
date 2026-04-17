@@ -20,11 +20,11 @@ Below are some screenshots of the StudyMate application showcasing its features 
 
 | Screenshot 1      | Screenshot 2      | Screenshot 3      |Screenshot 4       |
 |-------------------|-------------------|-------------------|-------------------|
-| ![Image1](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_20260318_093117.jpg?raw=true) | ![Image2](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_20260318_095245.jpg?raw=true) | ![Image3](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_20260318_095344.jpg?raw=true) |![Image4](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_20260318_095447.jpg?raw=true) |
+| ![Image1](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_2026_0417_192938.jpg?raw=true) | ![Image2](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_20260417_193211.jpg?raw=true) | ![Image3](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_20260417_193204.jpg?raw=true) |![Image4](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_20260417_193046.jpg?raw=true) |
 
 | Screenshot 5      | Screenshot 6      | Screenshot 7      |Screenshot 8       |
 |-------------------|-------------------|-------------------|-------------------|
-| ![Image5](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_20260318_095523.jpg?raw=true) | ![Image6](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_20260318_095611.jpg?raw=true) | ![Image7](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_2026_0318_093254.jpg?raw=true) |![Image8](https://github.com/rajatt04/rajatt04.github.io/blob/main/images/StudyMate/Screenshot_2026_0318_093315.jpg?raw=true) |
+| ![Image5](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_2026_0417_193129.jpg?raw=true) | ![Image6](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_2026_0417_193120.jpg?raw=true) | ![Image7](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_2026_0417_193039.jpg?raw=true) |![Image8](https://github.com/rajatt04/Student-Management-System/blob/sms-main/Projects/StudyMate/Screenshot_2026_0417_192954.jpg?raw=true) |
 
 ## 🏗️ Architecture
 

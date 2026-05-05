@@ -4,13 +4,25 @@
 
 **A production-ready student management system for educational institutions**
 
-[![Android CI/CD](https://github.com/rajatt04/StudyMateAlpha/actions/workflows/android-ci.yml/badge.svg)](https://github.com/rajatt04/StudyMateAlpha/actions/workflows/android-ci.yml)
 ![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-blue.svg)
 ![Architecture](https://img.shields.io/badge/Architecture-Clean%20MVVM-purple.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 </div>
+
+---
+
+## 📥 Download APK
+
+<p align="center">
+  <a href="https://github.com/rajatt04/StudyMate/releases/download/2.0/app-release.apk">
+    <img src="https://img.shields.io/badge/Download-StudyMate%20APK-FF6B6B?style=for-the-badge&logo=android&logoColor=white" />
+  </a>
+</p>
+<p align="center">
+  ⚡ Fast • 🎯 Minimal • 📱 Built with Kotlin & MVVM
+</p>
 
 ---
 
